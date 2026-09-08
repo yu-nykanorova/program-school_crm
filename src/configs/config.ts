@@ -1,0 +1,50 @@
+import dotenv from "dotenv";
+
+dotenv.config({ path: "../.env" });
+
+interface IConfig {
+    PORT: string;
+    MONGO_URI: string;
+    FRONT_URL: string;
+    JWT_ACCESS_SECRET: string;
+    JWT_REFRESH_SECRET: string;
+    JWT_ACCESS_LIFETIME: any;
+    JWT_REFRESH_LIFETIME: any;
+    ACTION_SECRET: string;
+    ACTION_LIFETIME: any;
+    ADMIN_EMAIL: string;
+    ADMIN_PASSWORD: string;
+}
+
+export function checkEnv(value: string | undefined, name: string): string {
+    if (!value) {
+        throw new Error(`Expected environment variable ${name}`);
+    }
+    return value;
+}
+
+export const config: IConfig = {
+    PORT: checkEnv(process.env.PORT, "PORT"),
+    MONGO_URI: checkEnv(process.env.MONGO_URI, "MONGO_URI"),
+    FRONT_URL: checkEnv(process.env.FRONT_URL, "MONGO_URI"),
+    JWT_ACCESS_SECRET: checkEnv(
+        process.env.JWT_ACCESS_SECRET,
+        "JWT_ACCESS_SECRET",
+    ),
+    JWT_REFRESH_SECRET: checkEnv(
+        process.env.JWT_REFRESH_SECRET,
+        "REFRESH_SECRET",
+    ),
+    JWT_ACCESS_LIFETIME: checkEnv(
+        process.env.JWT_ACCESS_LIFETIME,
+        "JWT_ACCESS_LIFETIME",
+    ),
+    JWT_REFRESH_LIFETIME: checkEnv(
+        process.env.JWT_REFRESH_LIFETIME,
+        "JWT_REFRESH_LIFETIME",
+    ),
+    ACTION_SECRET: checkEnv(process.env.ACTION_SECRET, "ACTION_SECRET"),
+    ACTION_LIFETIME: checkEnv(process.env.ACTION_LIFETIME, "ACTION_LIFETIME"),
+    ADMIN_EMAIL: checkEnv(process.env.ADMIN_EMAIL, "ADMIN_EMAIL"),
+    ADMIN_PASSWORD: checkEnv(process.env.ADMIN_PASSWORD, "ADMIN_PASSWORD"),
+};
