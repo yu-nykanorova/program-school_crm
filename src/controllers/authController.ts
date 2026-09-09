@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 
 class AuthController {
-    public login = async (req: Request, res: Response, next: NextFunction) => {
+    public async login(req: Request, res: Response, next: NextFunction) {
         try {
             res.status(StatusCodesEnum.OK).json();
         } catch (e) {

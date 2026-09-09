@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import { managerController } from "../controllers/managerController";
+
 const router = Router();
 
 router.get("/", managerController.getManagers);

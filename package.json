@@ -7,7 +7,9 @@
     "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
     "watch:server": "tsx src/main.ts --watch",
     "build": "tsc",
-    "start:prod": "node dist/main.js"
+    "start:prod": "node dist/main.js",
+    "seed": "tsx scripts/seed/seed.ts",
+    "import:orders": "tsx scripts/import-orders.ts"
   },
   "dependencies": {
     "express": "^5.2.1",

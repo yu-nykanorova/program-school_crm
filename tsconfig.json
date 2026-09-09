@@ -12,5 +12,7 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -14,7 +14,7 @@ export default [
             sourceType: "module",
             parser: tsParser,
             parserOptions: {
-                project: "./tsconfig.json",
+                project: ["./tsconfig.json", "./scripts/tsconfig.json"],
                 tsconfigRootDir: process.cwd(),
             },
             globals: {

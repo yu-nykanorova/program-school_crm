@@ -6,6 +6,7 @@ export interface IUser {
     email: string;
     name: string;
     surname: string;
+    password: string;
     lastLogin: Date | null;
     role: UserRoleEnum;
 }
@@ -14,4 +15,10 @@ export interface IManager extends IUser {
     status: ManagerStatusEnum;
 }
 
-export type IManagerCreateDTO = Pick<IUser, "email" | "name" | "surname">;
+export interface IUserCreateDTO {
+    email: string;
+    name: string;
+    surname: string;
+    password?: string;
+    role?: UserRoleEnum;
+}
