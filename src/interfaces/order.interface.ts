@@ -2,7 +2,6 @@ import { OrderCourseEnum } from "../enums/order-course.enum";
 import { OrderCourseFormatEnum } from "../enums/order-course-format.enum";
 import { OrderCourseTypeEnum } from "../enums/order-course-type.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
-import { IGroup } from "./group.interface";
 
 export interface IOrder {
     _id: string;
@@ -17,7 +16,7 @@ export interface IOrder {
     orderStatus: OrderStatusEnum | null;
     sum: number | null;
     alreadyPaid: number | null;
-    group: IGroup | null;
+    groupId: string | null;
     msg: string | null;
     utm: string | null;
     managerId: string | null;
@@ -29,7 +28,7 @@ export interface IOrder {
 export type IOrderEditDTO = Partial<
     Pick<
         IOrder,
-        | "group"
+        | "groupId"
         | "orderStatus"
         | "name"
         | "surname"

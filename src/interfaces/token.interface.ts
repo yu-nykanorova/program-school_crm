@@ -18,10 +18,3 @@ export type ITokenPair = Pick<IToken, "accessToken" | "refreshToken">;
 
 export type IRefresh = Pick<IToken, "refreshToken">;
 
-export interface IActionToken {
-    _id: string;
-    actionToken: string;
-    _userId: string;
-    createdAt: Date;
-    updatedAt: Date;
-}

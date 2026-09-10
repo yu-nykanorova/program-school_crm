@@ -6,19 +6,28 @@ export interface IUser {
     email: string;
     name: string;
     surname: string;
-    password: string;
+    password?: string;
     lastLogin: Date | null;
     role: UserRoleEnum;
-}
-
-export interface IManager extends IUser {
-    status: ManagerStatusEnum;
+    status?: ManagerStatusEnum;
 }
 
 export interface IUserCreateDTO {
     email: string;
     name: string;
     surname: string;
+    role: UserRoleEnum;
     password?: string;
-    role?: UserRoleEnum;
+    status?: ManagerStatusEnum;
+}
+
+export interface IManager extends IUser {
+    role: UserRoleEnum.MANAGER;
+    status: ManagerStatusEnum;
+}
+
+export interface IManagerCreateDTO {
+    email: string;
+    name: string;
+    surname: string;
 }

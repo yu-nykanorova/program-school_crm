@@ -1,5 +1,7 @@
 import { config } from "../../src/configs/config";
 import { UserRoleEnum } from "../../src/enums/user-role.enum";
+import { userRepository } from "../../src/repositories/user.repository";
+import { passwordService } from "../../src/services/password.service";
 
 export const seedAdmin = async (): Promise<void> => {
     const admin = await userRepository.getByEmail(config.ADMIN_EMAIL);

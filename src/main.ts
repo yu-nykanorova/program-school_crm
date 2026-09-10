@@ -37,6 +37,7 @@ const dbConnection = async () => {
             console.log("Database available!!!");
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
+            console.error("Database connection error:", error);
             console.log("Database unavailable, wait 5 seconds");
             await new Promise((resolve) => setTimeout(resolve, 5000));
         }

@@ -1,5 +1,7 @@
 export interface IActionToken {
     _id: string;
-    token: string;
+    actionToken: string;
     _userId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
