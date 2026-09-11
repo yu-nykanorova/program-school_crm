@@ -31,3 +31,13 @@ export interface IManagerCreateDTO {
     name: string;
     surname: string;
 }
+
+export interface IManagerResult {
+    _id: string;
+    email: string;
+    name: string;
+    surname: string;
+    lastLogin: Date | null;
+    role: UserRoleEnum.MANAGER;
+    status: ManagerStatusEnum;
+}
