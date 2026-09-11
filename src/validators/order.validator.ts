@@ -14,6 +14,7 @@ export class OrderValidator {
     private static age = joi.number().min(2).max(100);
     private static sum = joi.number().min(0).max(1000000);
     private static alreadyPaid = joi.number().min(0).max(1000000);
+    private static groupId = joi.string().hex().length(24).trim();
     private static orderStatus = joi
         .string()
         .valid(...Object.values(OrderStatusEnum));
@@ -39,5 +40,6 @@ export class OrderValidator {
         course: this.course,
         courseFormat: this.courseFormat,
         courseType: this.courseType,
+        groupId: this.groupId,
     });
 }

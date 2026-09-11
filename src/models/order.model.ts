@@ -39,17 +39,20 @@ const orderSchema = new Schema(
         msg: { type: String, default: null },
         managerId: { type: Schema.Types.ObjectId, ref: "User", default: null },
         groupId: { type: Schema.Types.ObjectId, ref: "Group", default: null },
-        comments: [
-            {
-                text: { type: String, required: true },
-                managerId: {
-                    type: Schema.Types.ObjectId,
-                    ref: "User",
-                    required: true,
+        comments: {
+            type: [
+                {
+                    text: { type: String, required: true },
+                    managerId: {
+                        type: Schema.Types.ObjectId,
+                        ref: "User",
+                        required: true,
+                    },
+                    createdAt: { type: Date, required: true },
                 },
-                createdAt: { type: Date, required: true },
-            },
-        ],
+            ],
+            default: [],
+        },
     },
     {
         timestamps: true,

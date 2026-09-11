@@ -9,7 +9,7 @@ class AuthController {
         } catch (e) {
             next(e);
         }
-    };
+    }
 
     public async refresh(req: Request, res: Response, next: NextFunction) {
         try {

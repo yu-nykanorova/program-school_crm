@@ -2,6 +2,7 @@ import { OrderCourseEnum } from "../enums/order-course.enum";
 import { OrderCourseFormatEnum } from "../enums/order-course-format.enum";
 import { OrderCourseTypeEnum } from "../enums/order-course-type.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
+import { IComment } from "./comment.interface";
 
 export interface IOrder {
     _id: string;
@@ -20,7 +21,7 @@ export interface IOrder {
     msg: string | null;
     utm: string | null;
     managerId: string | null;
-    comments: IComment[] | null;
+    comments: IComment[];
     createdAt: Date | null;
     updatedAt: Date;
 }
@@ -42,9 +43,3 @@ export type IOrderEditDTO = Partial<
         | "courseType"
     >
 >;
-
-export interface IComment {
-    text: string;
-    managerId: string;
-    createdAt: Date;
-}
