@@ -1,0 +1,17 @@
+export enum OrderQuerySortEnum {
+    ID = "_id",
+    NAME = "name",
+    SURNAME = "surname",
+    EMAIL = "email",
+    PHONE = "phone",
+    AGE = "age",
+    COURSE = "course",
+    COURSE_FORMAT = "courseFormat",
+    COURSE_TYPE = "courseType",
+    ORDER_STATUS = "orderStatus",
+    SUM = "sum",
+    ALREADY_PAID = "alreadyPaid",
+    GROUP = "group",
+    CREATED_AT = "createdAt",
+    MANAGER = "manager",
+}

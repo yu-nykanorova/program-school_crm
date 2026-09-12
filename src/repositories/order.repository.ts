@@ -78,7 +78,7 @@ class OrderRepository {
                         },
                     },
 
-                    null: {
+                    noStatus: {
                         $sum: {
                             $cond: [
                                 {
@@ -115,7 +115,7 @@ class OrderRepository {
                 agree: 0,
                 disagree: 0,
                 new: 0,
-                null: 0,
+                noStatus: 0,
                 dubbing: 0,
             }
         );
@@ -168,7 +168,7 @@ class OrderRepository {
             },
             {
                 $project: {
-                    manager: 0,
+                    managerId: 0,
                     groupId: 0,
                 },
             },

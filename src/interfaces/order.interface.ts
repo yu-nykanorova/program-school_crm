@@ -1,6 +1,7 @@
 import { OrderCourseEnum } from "../enums/order-course.enum";
 import { OrderCourseFormatEnum } from "../enums/order-course-format.enum";
 import { OrderCourseTypeEnum } from "../enums/order-course-type.enum";
+import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { IComment } from "./comment.interface";
 import { IGroup } from "./group.interface";
@@ -77,4 +78,23 @@ export interface IOrdersStatistics {
     new: number | null;
     null: number | null;
     dubbing: number | null;
+}
+
+export interface IOrderQuery {
+    name?: string;
+    surname?: string;
+    email?: string;
+    phone?: string;
+    age?: number;
+    course?: OrderCourseEnum;
+    courseFormat?: OrderCourseFormatEnum;
+    courseType?: OrderCourseTypeEnum;
+    orderStatus?: OrderStatusEnum;
+    groupId?: string;
+    myOrders?: boolean;
+    dateFrom?: string;
+    dateTo?: string;
+    order?: OrderQuerySortEnum;
+    page?: number;
+    pageSize?: number;
 }
