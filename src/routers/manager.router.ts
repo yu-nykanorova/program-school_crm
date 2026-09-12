@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { managerController } from "../controllers/managerController";
+import { managerController } from "../controllers/manager.controller";
 import { UserRoleEnum } from "../enums/user-role.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authController } from "../controllers/authController";
+import { authController } from "../controllers/auth.controller";
 import { TokenTypeEnum } from "../enums/token-type.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";

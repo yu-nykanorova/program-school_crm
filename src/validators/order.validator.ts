@@ -8,10 +8,10 @@ import { OrderStatusEnum } from "../enums/order-status.enum";
 import { RegexEnum } from "../enums/regex.enum";
 
 export class OrderValidator {
-    private static name = joi.string().regex(RegexEnum.NAME).trim();
-    private static surname = joi.string().regex(RegexEnum.NAME).trim();
+    private static name = joi.string().trim().min(2).max(50);
+    private static surname = joi.string().trim().min(2).max(50);
     private static email = joi.string().email().trim();
-    private static phone = joi.string().regex(RegexEnum.PHONE).trim();
+    private static phone = joi.string().max(13).trim();
     private static age = joi.number().min(2).max(100);
     private static sum = joi.number().min(0).max(1000000);
     private static alreadyPaid = joi.number().min(0).max(1000000);
@@ -34,10 +34,10 @@ export class OrderValidator {
     private static myOrders = joi.boolean();
 
     public static edit = joi.object({
-        name: this.name,
-        surname: this.surname,
+        name: joi.string().regex(RegexEnum.NAME),
+        surname: joi.string().regex(RegexEnum.NAME),
         email: this.email,
-        phone: this.phone,
+        phone: joi.string().regex(RegexEnum.PHONE),
         age: this.age,
         sum: this.sum,
         alreadyPaid: this.alreadyPaid,
@@ -64,7 +64,7 @@ export class OrderValidator {
         dateFrom: this.dateFrom,
         dateTo: this.dateTo,
         page: joi.number().integer().min(1).default(1),
-        pageSize: joi.number().integer().max(100).default(25),
+        pageSize: joi.number().integer().min(1).max(100).default(25),
         order: joi
             .string()
             .valid(

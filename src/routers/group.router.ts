@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { groupController } from "../controllers/groupController";
+import { groupController } from "../controllers/group.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { GroupValidator } from "../validators/group.validator";

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { orderController } from "../controllers/orderController";
+import { orderController } from "../controllers/order.controller";
 import { UserRoleEnum } from "../enums/user-role.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
