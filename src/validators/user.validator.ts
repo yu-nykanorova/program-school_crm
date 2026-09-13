@@ -21,5 +21,6 @@ export class UserValidator {
 
     public static setNewPassword = joi.object({
         password: this.password.required(),
+        confirmPassword: this.password.required(),
     });
 }

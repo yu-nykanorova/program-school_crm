@@ -17,27 +17,15 @@ export interface IUserCreateDTO {
     name: string;
     surname: string;
     role: UserRoleEnum;
-    password?: string;
+    password?: string | null;
     status?: ManagerStatusEnum;
 }
 
-export interface IManager extends IUser {
-    role: UserRoleEnum.MANAGER;
-    status: ManagerStatusEnum;
-}
-
-export interface IManagerCreateDTO {
-    email: string;
-    name: string;
-    surname: string;
-}
-
-export interface IManagerResult {
+export interface IUserResult {
     _id: string;
     email: string;
     name: string;
     surname: string;
-    lastLogin: Date | null;
-    role: UserRoleEnum.MANAGER;
-    status: ManagerStatusEnum;
+    lastLogin: string | null;
+    role: UserRoleEnum;
 }
