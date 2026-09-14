@@ -1,10 +1,12 @@
 import {
+    IManager,
     IManagerResult,
     IManagerWithStatistics,
+    IManagerWithStatisticsResult,
 } from "../interfaces/manager.interface";
 
 class ManagerPresenter {
-    public toPublicResDto(manager: IManagerWithStatistics): IManagerResult {
+    public toPublicResDto(manager: IManager): IManagerResult {
         return {
             _id: manager._id,
             email: manager.email,
@@ -13,6 +15,14 @@ class ManagerPresenter {
             role: manager.role,
             status: manager.status,
             lastLogin: manager.lastLogin ? manager.lastLogin.toString() : null,
+        };
+    }
+
+    public toPublicResDtoWithStatistics(
+        manager: IManagerWithStatistics,
+    ): IManagerWithStatisticsResult {
+        return {
+            ...this.toPublicResDto(manager),
             statistics: manager.statistics,
         };
     }

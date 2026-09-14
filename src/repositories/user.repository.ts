@@ -20,8 +20,8 @@ class UserRepository {
     public async updateUser(
         userId: string,
         dto: Partial<IUser>,
-    ): Promise<IUser> {
-        return await User.findByIdAndUpdate(userId, dto, {
+    ): Promise<void> {
+        await User.findByIdAndUpdate(userId, dto, {
             returnDocument: "after",
         });
     }
