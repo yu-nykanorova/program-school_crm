@@ -68,8 +68,8 @@ class AdminController {
     ) {
         try {
             const id = req.params.id as string;
-            const activationLink = await adminService.activateRequest(id);
-            res.status(StatusCodesEnum.OK).json(activationLink);
+            const token = await adminService.activateRequest(id);
+            res.status(StatusCodesEnum.OK).json(token);
         } catch (e) {
             next(e);
         }

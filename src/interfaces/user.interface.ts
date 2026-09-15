@@ -38,4 +38,6 @@ export interface IUserResult {
     lastLogin: string | null;
     role: UserRoleEnum;
     status?: ManagerStatusEnum;
+    createdAt: string;
+    updatedAt: string;
 }

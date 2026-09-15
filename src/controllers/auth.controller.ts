@@ -4,6 +4,7 @@ import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { IActivate, IAuth } from "../interfaces/auth.interface";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { userPresenter } from "../presenters/user.presenter";
+import { authService } from "../services/auth.service";
 
 class AuthController {
     public async login(req: Request, res: Response, next: NextFunction) {

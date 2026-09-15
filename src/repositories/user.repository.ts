@@ -4,14 +4,13 @@ import {
     IUser,
     IUserCreateDTO,
     IUserQuery,
-    IUserResult,
 } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 class UserRepository {
     public async getManagers(
         query: IUserQuery,
-    ): Promise<IAggregatedResponse<IUserResult>> {
+    ): Promise<IAggregatedResponse<IUser>> {
         const skip =
             query.pageSize && query.page
                 ? query.pageSize * (query.page - 1)
@@ -52,6 +51,10 @@ class UserRepository {
 
     public async create(user: IUserCreateDTO): Promise<IUser> {
         return await User.create(user);
+    }
+
+    public async getById(userId: string): Promise<IUser | null> {
+        return await User.findById(userId);
     }
 
     public async getByEmail(email: string): Promise<IUser | null> {

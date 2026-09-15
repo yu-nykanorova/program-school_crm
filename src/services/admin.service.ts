@@ -1,14 +1,19 @@
+import { ManagerStatusEnum } from "../enums/manager-status.enum";
+import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { UserRoleEnum } from "../enums/user-role.enum";
+import { ApiError } from "../errors/api.errors";
 import {
+    IManager,
     IManagerCreateDTO,
-    IManagerResult,
     IManagerStatisticsDB,
-    IManagerWithStatisticsResult,
+    IManagerWithStatistics,
 } from "../interfaces/manager.interface";
 import { IPaginatedResponse } from "../interfaces/paginated-response";
-import { IUserQuery, IUserResult } from "../interfaces/user.interface";
+import { IUser, IUserQuery } from "../interfaces/user.interface";
 import { orderRepository } from "../repositories/order.repository";
 import { userRepository } from "../repositories/user.repository";
+import { tokenService } from "./token.service";
+import { userService } from "./user.service";
 import { IOrdersStatistics } from "../interfaces/order.interface";
 
 const LIMIT_PAGE_SIZE = 10;
@@ -16,10 +21,10 @@ const LIMIT_PAGE_SIZE = 10;
 class AdminService {
     public async getManagers(
         query: IUserQuery,
-    ): Promise<IPaginatedResponse<IManagerWithStatisticsResult>> {
+    ): Promise<IPaginatedResponse<IManagerWithStatistics>> {
         const dataFromDB = await userRepository.getManagers(query);
 
-        const managers: IUserResult[] = dataFromDB.data;
+        const managers = dataFromDB.data;
         const totalItems = dataFromDB.totalItems;
 
         const pageSize = LIMIT_PAGE_SIZE;
@@ -35,9 +40,9 @@ class AdminService {
             statisticsMap.set(statistic._id, statistic);
         });
 
-        const data: IManagerWithStatisticsResult[] = managers.map((manager) => {
+        const data: IManagerWithStatistics[] = managers.map((manager) => {
             if (!manager.status) {
-                throw new Error(`Manager ${manager._id} has no status`);
+                throw new Error(`Manager ${manager._id} status is missing`);
             }
             const managerStatistics = statisticsMap.get(manager._id);
             return {
@@ -48,6 +53,8 @@ class AdminService {
                 lastLogin: manager.lastLogin,
                 role: UserRoleEnum.MANAGER,
                 status: manager.status,
+                createdAt: manager.createdAt,
+                updatedAt: manager.updatedAt,
                 statistics: managerStatistics
                     ? {
                           total: managerStatistics.total,
@@ -75,25 +82,106 @@ class AdminService {
         };
     }
 
-    public async createManager(
-        manager: IManagerCreateDTO,
-    ): Promise<IManagerResult> {}
+    public async createManager(manager: IManagerCreateDTO): Promise<IManager> {
+        await userService.isEmailUnique(manager.email);
 
-    public async banManager(
-        managerId: string
-    ): Promise<void> {}
+        const newManager = await userRepository.create({
+            ...manager,
+            role: UserRoleEnum.MANAGER,
+            status: ManagerStatusEnum.NEW,
+        });
 
-    public async unbanManager(
-        managerId: string
-    ): Promise<void> {}
+        if (newManager.role !== UserRoleEnum.MANAGER) {
+            throw new ApiError(
+                `User is not a manager`,
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
 
-    public async activateRequest(
-        managerId: string
-    ): Promise<void> {}
+        if (!newManager.status) {
+            throw new Error(`Manager ${newManager._id} status is missing`);
+        }
 
-    public async getOrdersStatistics()Promise<IOrdersStatistics> {
+        return {
+            ...newManager,
+            role: UserRoleEnum.MANAGER,
+            status: newManager.status,
+        };
+    }
 
-    };
+    public async banManager(managerId: string): Promise<void> {
+        const manager = await this.getManager(managerId);
+
+        if (manager.status === ManagerStatusEnum.BANNED) {
+            throw new ApiError(
+                "Manager already banned",
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
+        await userRepository.updateUser(managerId, {
+            status: ManagerStatusEnum.BANNED,
+        });
+    }
+
+    public async unbanManager(managerId: string): Promise<void> {
+        const manager = await this.getManager(managerId);
+
+        if (manager.status === ManagerStatusEnum.ACTIVE) {
+            throw new ApiError(
+                "Manager already activated",
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
+        await userRepository.updateUser(managerId, {
+            status: ManagerStatusEnum.ACTIVE,
+        });
+    }
+
+    public async activateRequest(managerId: string): Promise<string> {
+        const manager = await this.getManager(managerId);
+
+        if (manager.status !== ManagerStatusEnum.NEW) {
+            throw new ApiError(
+                "Manager is already activated",
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
+        return tokenService.generateActionToken({
+            userId: managerId,
+            role: UserRoleEnum.MANAGER,
+        });
+    }
+
+    public async getOrdersStatistics(): Promise<IOrdersStatistics> {
+        return await orderRepository.getOrdersStatistics();
+    }
+
+    private async getManager(managerId: string): Promise<IUser> {
+        const manager = await userRepository.getById(managerId);
+
+        if (!manager) {
+            throw new ApiError("Manager not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        if (manager.role !== UserRoleEnum.MANAGER) {
+            throw new ApiError(
+                `User is not a manager`,
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
+        if (!manager.status) {
+            throw new ApiError(
+                "Manager status is missing",
+                StatusCodesEnum.INTERNAL_SERVER_ERROR,
+            );
+        }
+
+        return manager;
+    }
 }
 
 export const adminService = new AdminService();

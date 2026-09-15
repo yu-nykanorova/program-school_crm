@@ -15,6 +15,8 @@ class ManagerPresenter {
             role: manager.role,
             status: manager.status,
             lastLogin: manager.lastLogin ? manager.lastLogin.toString() : null,
+            createdAt: manager.createdAt.toString(),
+            updatedAt: manager.updatedAt.toString(),
         };
     }
 

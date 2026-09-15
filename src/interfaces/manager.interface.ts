@@ -25,9 +25,11 @@ export interface IManagerResult {
     lastLogin: string | null;
     role: UserRoleEnum.MANAGER;
     status: ManagerStatusEnum;
+    createdAt: string;
+    updatedAt: string;
 }
 
-export interface IManagerWithStatisticsResult extends IManagerResult {
+export interface IManagerWithStatisticsResult extends IManager {
     statistics: IManagerStatistics;
 }
 

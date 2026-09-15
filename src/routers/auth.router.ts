@@ -23,7 +23,7 @@ router.post(
 router.post("/logout", authMiddleware.checkRefreshToken, authController.logout);
 
 router.post(
-    "/activate",
+    "/activate/:token",
     authMiddleware.checkActionToken(TokenTypeEnum.ACTION),
     commonMiddleware.isBodyValid(UserValidator.setNewPassword),
     authController.activate,
