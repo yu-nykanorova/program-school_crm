@@ -4,15 +4,24 @@ import { adminController } from "../controllers/admin.controller";
 import { UserRoleEnum } from "../enums/user-role.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
+import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
 router.use(authMiddleware.checkAccessToken);
 router.use(authMiddleware.checkRole(UserRoleEnum.ADMIN));
 
-router.get("/managers", adminController.getManagers);
+router.get(
+    "/managers",
+    commonMiddleware.isQueryValid(UserValidator.query),
+    adminController.getManagers,
+);
 
-router.post("/managers", adminController.createManager);
+router.post(
+    "/managers",
+    commonMiddleware.isBodyValid(UserValidator.createManager),
+    adminController.createManager,
+);
 
 router.post(
     "/managers/:id/ban",

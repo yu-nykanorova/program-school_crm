@@ -4,6 +4,7 @@ import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { IAggregatedResponse } from "../interfaces/aggregated-response";
 import { IComment } from "../interfaces/comment.interface";
+import { IManagerStatisticsDB } from "../interfaces/manager.interface";
 import {
     IOrderEditDTO,
     IOrderQuery,
@@ -12,7 +13,7 @@ import {
 } from "../interfaces/order.interface";
 import { Order } from "../models/order.model";
 
-const LIMIT_PAGES = 25;
+const LIMIT_PAGE_SIZE = 25;
 
 class OrderRepository {
     public async getOrders(
@@ -23,7 +24,7 @@ class OrderRepository {
             query.pageSize && query.page
                 ? query.pageSize * (query.page - 1)
                 : 0;
-        const limit = Number(query.pageSize) || LIMIT_PAGES;
+        const limit = Number(query.pageSize) || LIMIT_PAGE_SIZE;
 
         const filterObject = this.buildFilter(query, managerId);
 
@@ -202,6 +203,88 @@ class OrderRepository {
                 dubbing: 0,
             }
         );
+    }
+
+    public async getManagersStatistics(
+        managerIds: string[],
+    ): Promise<IManagerStatisticsDB[]> {
+        const objectManagerIds = managerIds.map((id) => new Types.ObjectId(id));
+
+        const [result] = await Order.aggregate([
+            {
+                $match: {
+                    managerId: {
+                        $in: objectManagerIds,
+                    },
+                },
+                $group: {
+                    _id: "$managerId",
+                    total: { $sum: 1 },
+
+                    inWork: {
+                        $sum: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        "$orderStatus",
+                                        OrderStatusEnum.IN_WORK,
+                                    ],
+                                },
+                                1,
+                                0,
+                            ],
+                        },
+                    },
+
+                    agree: {
+                        $sum: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        "$orderStatus",
+                                        OrderStatusEnum.AGREE,
+                                    ],
+                                },
+                                1,
+                                0,
+                            ],
+                        },
+                    },
+
+                    disagree: {
+                        $sum: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        "$orderStatus",
+                                        OrderStatusEnum.DISAGREE,
+                                    ],
+                                },
+                                1,
+                                0,
+                            ],
+                        },
+                    },
+
+                    dubbing: {
+                        $sum: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        "$orderStatus",
+                                        OrderStatusEnum.DUBBING,
+                                    ],
+                                },
+                                1,
+                                0,
+                            ],
+                        },
+                    },
+                },
+            },
+        ]);
+
+        return result;
     }
 
     public async getOrderById(orderId: string): Promise<IOrderResult | null> {

@@ -5,7 +5,7 @@ import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { IComment } from "./comment.interface";
 import { IGroup } from "./group.interface";
-import { IManagerResult } from "./user.interface";
+import { IManagerResult } from "./manager.interface";
 
 export interface IOrder {
     _id: string;

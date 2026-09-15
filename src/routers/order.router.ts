@@ -4,12 +4,17 @@ import { orderController } from "../controllers/order.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { CommentValidator } from "../validators/comment.validator";
+import { OrderValidator } from "../validators/order.validator";
 
 const router = Router();
 
 router.use(authMiddleware.checkAccessToken);
 
-router.get("/", orderController.getOrders);
+router.get(
+    "/",
+    commonMiddleware.isQueryValid(OrderValidator.query),
+    orderController.getOrders,
+);
 
 router.get("/export", orderController.getOrdersExport);
 
@@ -22,6 +27,7 @@ router.get(
 router.patch(
     "/:id",
     commonMiddleware.isIdValid("id"),
+    commonMiddleware.isBodyValid(OrderValidator.edit),
     orderController.editOrderById,
 );
 

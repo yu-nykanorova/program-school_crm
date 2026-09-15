@@ -6,6 +6,7 @@ import { OrderCourseTypeEnum } from "../enums/order-course-type.enum";
 import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { RegexEnum } from "../enums/regex.enum";
+import { queryValidator } from "./query.validator";
 
 export class OrderValidator {
     private static name = joi.string().trim().min(2).max(50);
@@ -49,28 +50,23 @@ export class OrderValidator {
         managerId: this.managerId,
     });
 
-    public static query = joi.object({
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        phone: this.phone,
-        age: this.age,
-        course: this.course,
-        courseFormat: this.courseFormat,
-        courseType: this.courseType,
-        orderStatus: this.orderStatus,
-        groupId: this.groupId,
-        myOrders: this.myOrders,
-        dateFrom: this.dateFrom,
-        dateTo: this.dateTo,
-        page: joi.number().integer().min(1).default(1),
-        pageSize: joi.number().integer().min(1).max(100).default(25),
-        order: joi
-            .string()
-            .valid(
-                ...Object.values(OrderQuerySortEnum),
-                ...Object.values(OrderQuerySortEnum).map((item) => `-${item}`),
-            )
-            .default(`-${OrderQuerySortEnum.ID}`),
+    public static query = queryValidator(OrderQuerySortEnum, {
+        pageSize: 25,
+        defaultOrder: `-${OrderQuerySortEnum.ID}`,
+        additionalFields: {
+            name: this.name,
+            surname: this.surname,
+            email: this.email,
+            phone: this.phone,
+            age: this.age,
+            course: this.course,
+            courseFormat: this.courseFormat,
+            courseType: this.courseType,
+            orderStatus: this.orderStatus,
+            groupId: this.groupId,
+            myOrders: this.myOrders,
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo,
+        },
     });
 }

@@ -38,3 +38,7 @@ export interface IManagerStatistics {
     disagree: number;
     dubbing: number;
 }
+
+export interface IManagerStatisticsDB extends IManagerStatistics {
+    _id: string;
+}

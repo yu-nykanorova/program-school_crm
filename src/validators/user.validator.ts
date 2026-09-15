@@ -1,6 +1,8 @@
 import joi from "joi";
 
 import { RegexEnum } from "../enums/regex.enum";
+import { UserQuerySortEnum } from "../enums/user-query-sort.enum";
+import { queryValidator } from "./query.validator";
 
 export class UserValidator {
     private static email = joi.string().email().trim();
@@ -22,5 +24,10 @@ export class UserValidator {
     public static setNewPassword = joi.object({
         password: this.password.required(),
         confirmPassword: this.password.required(),
+    });
+
+    public static query = queryValidator(UserQuerySortEnum, {
+        pageSize: 10,
+        defaultOrder: `-${UserQuerySortEnum.CREATED_AT}`,
     });
 }

@@ -3,12 +3,17 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { toListResponse } from "../helpers/to-list-response";
 import { IManagerCreateDTO } from "../interfaces/manager.interface";
+import { IUserQuery } from "../interfaces/user.interface";
 import { managerPresenter } from "../presenters/manager.presenter";
+import { adminService } from "../services/admin.service";
 
 class AdminController {
     public async getManagers(req: Request, res: Response, next: NextFunction) {
         try {
-            const managers = await adminService.getManagers();
+            const { validatedQuery } = req as any as {
+                validatedQuery: IUserQuery;
+            };
+            const managers = await adminService.getManagers(validatedQuery);
             const result = toListResponse.toListResDto(
                 managers,
                 managerPresenter.toPublicResDtoWithStatistics.bind(
