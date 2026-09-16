@@ -1,4 +1,4 @@
-import { IGroup, IGroupCreateDTO } from "../interfaces/group.interface";
+import { IGroup } from "../interfaces/group.interface";
 import { Group } from "../models/group.model";
 
 class GroupRepository {
@@ -11,8 +11,12 @@ class GroupRepository {
             .sort({ name: 1 });
     }
 
-    public async createGroup(group: IGroupCreateDTO): Promise<IGroup> {
-        return await Group.create(group);
+    public async createGroup(groupName: string): Promise<IGroup> {
+        return await Group.create({ name: groupName });
+    }
+
+    public async getByName(groupName: string): Promise<IGroup | null> {
+        return await Group.findOne({ name: new RegExp(`^${groupName}$`, "i") });
     }
 }
 

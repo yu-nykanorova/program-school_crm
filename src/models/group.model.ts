@@ -4,7 +4,7 @@ import { IGroup } from "../interfaces/group.interface";
 
 const groupSchema = new Schema(
     {
-    name: { type: String, required: true, unique: true, trim: true },
+        name: { type: String, required: true, unique: true, trim: true },
     },
     {
         versionKey: false,

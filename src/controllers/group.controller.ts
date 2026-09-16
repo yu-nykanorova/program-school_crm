@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { IGroupCreateDTO } from "../interfaces/group.interface";
+import { groupService } from "../services/group.service";
 
 class GroupController {
     public async getGroups(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +17,7 @@ class GroupController {
     public async createGroup(req: Request, res: Response, next: NextFunction) {
         try {
             const group = req.body as IGroupCreateDTO;
-            const data = await groupService.createGroup(group.name);
+            const data = await groupService.createGroup(group);
             res.status(StatusCodesEnum.CREATED).json(data);
         } catch (e) {
             next(e);
