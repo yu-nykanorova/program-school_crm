@@ -8,13 +8,14 @@ import {
     IManagerStatisticsDB,
     IManagerWithStatistics,
 } from "../interfaces/manager.interface";
+import { IOrdersStatistics } from "../interfaces/order.interface";
 import { IPaginatedResponse } from "../interfaces/paginated-response";
 import { IUser, IUserQuery } from "../interfaces/user.interface";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { orderRepository } from "../repositories/order.repository";
 import { userRepository } from "../repositories/user.repository";
 import { tokenService } from "./token.service";
 import { userService } from "./user.service";
-import { IOrdersStatistics } from "../interfaces/order.interface";
 
 const LIMIT_PAGE_SIZE = 10;
 
@@ -142,17 +143,17 @@ class AdminService {
     public async activateRequest(managerId: string): Promise<string> {
         const manager = await this.getManager(managerId);
 
-        if (manager.status !== ManagerStatusEnum.NEW) {
-            throw new ApiError(
-                "Manager is already activated",
-                StatusCodesEnum.BAD_REQUEST,
-            );
-        }
-
-        return tokenService.generateActionToken({
+        const actionToken = tokenService.generateActionToken({
             userId: managerId,
             role: UserRoleEnum.MANAGER,
         });
+
+        await actionTokenRepository.create({
+            actionToken,
+            _userId: manager._id,
+        });
+
+        return actionToken;
     }
 
     public async getOrdersStatistics(): Promise<IOrdersStatistics> {
@@ -160,11 +161,7 @@ class AdminService {
     }
 
     private async getManager(managerId: string): Promise<IUser> {
-        const manager = await userRepository.getById(managerId);
-
-        if (!manager) {
-            throw new ApiError("Manager not found", StatusCodesEnum.NOT_FOUND);
-        }
+        const manager = await userService.getUserOrThrow(managerId);
 
         if (manager.role !== UserRoleEnum.MANAGER) {
             throw new ApiError(

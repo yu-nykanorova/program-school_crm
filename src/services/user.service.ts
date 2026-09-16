@@ -1,6 +1,7 @@
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { userRepository } from "../repositories/user.repository";
+import { IUser } from "../interfaces/user.interface";
 
 class UserService {
     public async isEmailUnique(email: string): Promise<void> {
@@ -12,6 +13,19 @@ class UserService {
                 StatusCodesEnum.CONFLICT,
             );
         }
+    }
+
+    public async getUserOrThrow(userId: string): Promise<IUser> {
+        const user = await userRepository.getById(userId);
+
+        if (!user) {
+            throw new ApiError(
+                "User not found",
+                StatusCodesEnum.NOT_FOUND,
+            );
+        }
+
+        return user;
     }
 }
 

@@ -95,18 +95,23 @@ class AuthMiddleware {
     public checkActionToken(type: TokenTypeEnum) {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
-                const token: string = req.body.token;
+                const { token } = req.body;
+
                 const payload = tokenService.verifyToken(token, type);
+
                 const tokenEntity =
                     await actionTokenRepository.getByToken(token);
+
                 if (!tokenEntity) {
                     throw new ApiError(
                         "Invalid token",
                         StatusCodesEnum.UNAUTHORIZED,
                     );
                 }
+
                 res.locals.tokenPayload = payload;
                 res.locals.actionToken = token;
+
                 next();
             } catch (e) {
                 next(e);
@@ -121,7 +126,7 @@ class AuthMiddleware {
 
                 if (payload.role !== role) {
                     throw new ApiError(
-                        "Acces forbidden!",
+                        "Access is forbidden!",
                         StatusCodesEnum.FORBIDDEN,
                     );
                 }

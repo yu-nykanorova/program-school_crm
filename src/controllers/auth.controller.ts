@@ -46,8 +46,15 @@ class AuthController {
     public async activate(req: Request, res: Response, next: NextFunction) {
         try {
             const payload = res.locals.tokenPayload as ITokenPayload;
-            const dto = req.body as IActivate;
-            await authService.activate(dto, payload);
+            const { password, confirmPassword } = req.body;
+            const actionToken = res.locals.actionToken as string;
+
+            const dto: IActivate = {
+                password,
+                confirmPassword,
+            };
+
+            await authService.activate(dto, payload, actionToken);
             res.sendStatus(StatusCodesEnum.NO_CONTENT);
         } catch (e) {
             next(e);

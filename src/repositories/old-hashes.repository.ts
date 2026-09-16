@@ -2,7 +2,9 @@ import { IOldHash } from "../interfaces/old-hash.interface";
 import { OldHash } from "../models/old-hash.model";
 
 class OldHashesRepository {
-    public async create(dto: IOldHash): Promise<void> {
+    public async create(
+        dto: Pick<IOldHash, "_userId" | "hash">,
+    ): Promise<void> {
         await OldHash.create(dto);
     }
 

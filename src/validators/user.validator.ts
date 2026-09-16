@@ -9,6 +9,7 @@ export class UserValidator {
     private static password = joi.string().regex(RegexEnum.PASSWORD);
     private static name = joi.string().regex(RegexEnum.NAME).trim();
     private static surname = joi.string().regex(RegexEnum.NAME).trim();
+    private static token = joi.string();
 
     public static createManager = joi.object({
         email: this.email.required(),
@@ -22,6 +23,7 @@ export class UserValidator {
     });
 
     public static setNewPassword = joi.object({
+        token: this.token.required(),
         password: this.password.required(),
         confirmPassword: this.password.required(),
     });
