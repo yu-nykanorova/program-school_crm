@@ -1,9 +1,9 @@
-import { Types } from "mongoose";
+import { PipelineStage, Types } from "mongoose";
 
 import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { IAggregatedResponse } from "../interfaces/aggregated-response";
-import { IComment } from "../interfaces/comment.interface";
+import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import { IManagerStatisticsDB } from "../interfaces/manager.interface";
 import {
     IOrderEditDTO,
@@ -13,81 +13,24 @@ import {
 } from "../interfaces/order.interface";
 import { Order } from "../models/order.model";
 
-const LIMIT_PAGE_SIZE = 25;
-
 class OrderRepository {
     public async getOrders(
-        query: IOrderQuery = {},
+        query: IOrderQuery,
         managerId?: string,
     ): Promise<IAggregatedResponse<IOrderResult>> {
-        const skip =
-            query.pageSize && query.page
-                ? query.pageSize * (query.page - 1)
-                : 0;
-        const limit = Number(query.pageSize) || LIMIT_PAGE_SIZE;
+        const skip = query.pageSize * (query.page - 1);
+        const limit = query.pageSize;
 
-        const filterObject = this.buildFilter(query, managerId);
+        const pipeline: PipelineStage[] = this.buildAggregate(query, managerId);
 
-        const sortObject = this.buildSort(query);
+        pipeline.push({
+            $facet: {
+                data: [{ $skip: skip }, { $limit: limit }],
+                totalItems: [{ $count: "count" }],
+            },
+        });
 
-        const [result] = await Order.aggregate([
-            {
-                $match: filterObject,
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "managerId",
-                    foreignField: "_id",
-                    pipeline: [
-                        {
-                            $project: {
-                                _id: 1,
-                                email: 1,
-                                name: 1,
-                                surname: 1,
-                            },
-                        },
-                    ],
-                    as: "manager",
-                },
-            },
-            {
-                $lookup: {
-                    from: "group",
-                    localField: "groupId",
-                    foreignField: "_id",
-                    as: "group",
-                },
-            },
-            {
-                $unwind: {
-                    path: "$manager",
-                    preserveNullAndEmptyArrays: true,
-                },
-            },
-            {
-                $unwind: {
-                    path: "$group",
-                    preserveNullAndEmptyArrays: true,
-                },
-            },
-            {
-                $sort: sortObject,
-            },
-            {
-                $project: {
-                    managerId: 0,
-                    groupId: 0,
-                },
-            },
-            {
-                $facet: {
-                    data: [{ $skip: skip }, { $limit: limit }],
-                    totalItems: [{ $count: "count" }],
-                },
-            },
-        ]).collation({
+        const [result] = await Order.aggregate(pipeline).collation({
             locale: "uk",
             numericOrdering: true,
         });
@@ -96,6 +39,18 @@ class OrderRepository {
             data: result?.data ?? [],
             totalItems: result?.totalItems[0]?.count ?? 0,
         };
+    }
+
+    public async getOrdersExport(
+        query: IOrderQuery,
+        managerId?: string,
+    ): Promise<IOrderResult[]> {
+        const pipeline: PipelineStage[] = this.buildAggregate(query, managerId);
+
+        return await Order.aggregate(pipeline).collation({
+            locale: "uk",
+            numericOrdering: true,
+        });
     }
 
     public async getOrdersStatistics(): Promise<IOrdersStatistics> {
@@ -353,7 +308,7 @@ class OrderRepository {
 
     public async createCommentToOrder(
         orderId: string,
-        comment: IComment,
+        comment: ICommentCreateDTO,
     ): Promise<IOrderResult> {
         return await Order.findByIdAndUpdate(
             orderId,
@@ -468,6 +423,67 @@ class OrderRepository {
 
         orderObject[orderKey] = direction;
         return orderObject;
+    }
+
+    private buildAggregate(query: IOrderQuery, managerId?: string) {
+        const filterObject = this.buildFilter(query, managerId);
+
+        const sortObject = this.buildSort(query);
+
+        const pipeline: any[] = [
+            {
+                $match: filterObject,
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "managerId",
+                    foreignField: "_id",
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 1,
+                                email: 1,
+                                name: 1,
+                                surname: 1,
+                            },
+                        },
+                    ],
+                    as: "manager",
+                },
+            },
+            {
+                $lookup: {
+                    from: "group",
+                    localField: "groupId",
+                    foreignField: "_id",
+                    as: "group",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$manager",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                $unwind: {
+                    path: "$group",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                $sort: sortObject,
+            },
+            {
+                $project: {
+                    managerId: 0,
+                    groupId: 0,
+                },
+            },
+        ];
+
+        return pipeline;
     }
 }
 

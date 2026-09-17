@@ -17,8 +17,6 @@ import { userRepository } from "../repositories/user.repository";
 import { tokenService } from "./token.service";
 import { userService } from "./user.service";
 
-const LIMIT_PAGE_SIZE = 10;
-
 class AdminService {
     public async getManagers(
         query: IUserQuery,
@@ -28,7 +26,7 @@ class AdminService {
         const managers = dataFromDB.data;
         const totalItems = dataFromDB.totalItems;
 
-        const pageSize = LIMIT_PAGE_SIZE;
+        const pageSize = Number(query.pageSize);
         const page = Number(query.page);
         const totalPages = Math.ceil(totalItems / pageSize);
 

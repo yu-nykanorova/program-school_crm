@@ -16,12 +16,10 @@ router.get(
     orderController.getOrders,
 );
 
-router.get("/export", orderController.getOrdersExport);
-
 router.get(
-    "/:id",
-    commonMiddleware.isIdValid("id"),
-    orderController.getOrderById,
+    "/export",
+    commonMiddleware.isQueryValid(OrderValidator.query),
+    orderController.getOrdersExport,
 );
 
 router.patch(

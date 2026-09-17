@@ -1,0 +1,17 @@
+export const ordersTableColumnsConstants = [
+    { header: "Id", key: "id" },
+    { header: "Name", key: "name" },
+    { header: "Surname", key: "surname" },
+    { header: "Email", key: "email" },
+    { header: "Phone", key: "phone" },
+    { header: "Age", key: "age" },
+    { header: "Course", key: "course" },
+    { header: "Course Format", key: "courseFormat" },
+    { header: "Course Type", key: "courseType" },
+    { header: "Status", key: "orderStatus" },
+    { header: "Sum", key: "sum" },
+    { header: "Already Paid", key: "alreadyPaid" },
+    { header: "Group", key: "group" },
+    { header: "Created At", key: "createdAt" },
+    { header: "Manager", key: "manager" },
+];
