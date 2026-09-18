@@ -44,11 +44,7 @@ class OrderService {
         payload: ITokenPayload,
         dto: IOrderEditDTO,
     ): Promise<IOrderResult> {
-        const order = await orderRepository.getOrderById(orderId);
-
-        if (!order) {
-            throw new ApiError("Order not found", StatusCodesEnum.NOT_FOUND);
-        }
+        const order = await this.getOrderOrThrow(orderId);
 
         this.checkAccessToEdit(order, payload.userId);
 
@@ -59,9 +55,7 @@ class OrderService {
                 : {}),
         };
 
-        await orderRepository.editOrderById(orderId, updatedDto);
-
-        return await orderRepository.getOrderById(orderId);
+        return await orderRepository.editOrderById(orderId, updatedDto);
     }
 
     public async createCommentToOrder(
@@ -69,35 +63,34 @@ class OrderService {
         payload: ITokenPayload,
         dto: ICommentCreateDTO,
     ): Promise<IOrderResult> {
-        const order = await orderRepository.getOrderById(orderId);
-
-        if (!order) {
-            throw new ApiError("Order not found", StatusCodesEnum.NOT_FOUND);
-        }
+        const order = await this.getOrderOrThrow(orderId);
 
         this.checkAccessToEdit(order, payload.userId);
 
-        const commentedOrder = await orderRepository.createCommentToOrder(
+        await orderRepository.createCommentToOrder(
             orderId,
+            payload.userId,
             dto,
         );
 
+        const updateOrderData: IOrderEditDTO = {};
+
         if (!order.manager?._id) {
-            await orderRepository.editOrderById(orderId, {
-                managerId: payload.userId,
-            });
+            updateOrderData.managerId = payload.userId;
         }
 
         if (
-            commentedOrder.orderStatus === OrderStatusEnum.NEW ||
-            commentedOrder.orderStatus === null
+            order.orderStatus === OrderStatusEnum.NEW ||
+            order.orderStatus === null
         ) {
-            await orderRepository.editOrderById(orderId, {
-                orderStatus: OrderStatusEnum.IN_WORK,
-            });
+            updateOrderData.orderStatus = OrderStatusEnum.IN_WORK;
         }
 
-        return commentedOrder;
+        if (Object.keys(updateOrderData).length > 0) {
+            await orderRepository.editOrderById(orderId, updateOrderData);
+        }
+
+        return await orderRepository.getOrderById(orderId);
     }
 
     public async getOrdersExport(query: IOrderQuery, payload: ITokenPayload) {
@@ -107,6 +100,16 @@ class OrderService {
         );
 
         return await this.exportToExcel(orders);
+    }
+
+    private async getOrderOrThrow(orderId: string): Promise<IOrderResult> {
+        const order = await orderRepository.getOrderById(orderId);
+
+        if (!order) {
+            throw new ApiError("Order not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return order;
     }
 
     private checkAccessToEdit(order: IOrderResult, userId: string): void {

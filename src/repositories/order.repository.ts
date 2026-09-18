@@ -308,13 +308,18 @@ class OrderRepository {
 
     public async createCommentToOrder(
         orderId: string,
+        userId: string,
         comment: ICommentCreateDTO,
     ): Promise<IOrderResult> {
         return await Order.findByIdAndUpdate(
             orderId,
             {
                 $push: {
-                    comments: comment,
+                    comments: {
+                        ...comment,
+                        managerId: userId,
+                        createdAt: new Date(),
+                    },
                 },
             },
             { returnDocument: "after" },
