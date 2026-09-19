@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { config } from "./configs/config";
 import { ApiError } from "./errors/api.errors";
 import { apiRouter } from "./routers/api.router";
+import { cronRunner } from "./crons";
 
 const app = express();
 
@@ -47,6 +48,7 @@ const dbConnection = async () => {
 const start = async () => {
     try {
         await dbConnection();
+        await cronRunner();
         app.listen(config.PORT, () => {
             console.log(`Server started on port: ${config.PORT}`);
         });
