@@ -29,7 +29,7 @@ export interface IManagerResult {
     updatedAt: string;
 }
 
-export interface IManagerWithStatisticsResult extends IManager {
+export interface IManagerWithStatisticsResult extends IManagerResult {
     statistics: IManagerStatistics;
 }
 

@@ -3,7 +3,7 @@ import { OrderCourseFormatEnum } from "../enums/order-course-format.enum";
 import { OrderCourseTypeEnum } from "../enums/order-course-type.enum";
 import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
-import { IComment } from "./comment.interface";
+import { IComment, ICommentResult } from "./comment.interface";
 import { IGroup } from "./group.interface";
 import { IManagerResult } from "./manager.interface";
 
@@ -65,7 +65,7 @@ export interface IOrderResult {
     msg: string | null;
     utm: string | null;
     manager: IManagerResult | null;
-    comments: IComment[];
+    comments: ICommentResult[];
     createdAt: Date | null;
     updatedAt: Date;
 }

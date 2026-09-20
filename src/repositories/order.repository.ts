@@ -459,10 +459,27 @@ class OrderRepository {
             },
             {
                 $lookup: {
-                    from: "group",
+                    from: "groups",
                     localField: "groupId",
                     foreignField: "_id",
                     as: "group",
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "comments.managerId",
+                    foreignField: "_id",
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                surname: 1,
+                            },
+                        },
+                    ],
+                    as: "commentManagers",
                 },
             },
             {
@@ -478,12 +495,44 @@ class OrderRepository {
                 },
             },
             {
+                $set: {
+                    comments: {
+                        $map: {
+                            input: "$comments",
+                            as: "comment",
+                            in: {
+                                text: "$$comment.text",
+                                createdAt: "$$comment.createdAt",
+                                manager: {
+                                    $arrayElemAt: [
+                                        {
+                                            $filter: {
+                                                input: "$commentManagers",
+                                                as: "manager",
+                                                cond: {
+                                                    $eq: [
+                                                        "$$manager._id",
+                                                        "$$comment.managerId",
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                        0,
+                                    ],
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            {
                 $sort: sortObject,
             },
             {
                 $project: {
                     managerId: 0,
                     groupId: 0,
+                    commentManagers: 0,
                 },
             },
         ];
