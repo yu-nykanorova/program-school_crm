@@ -1,7 +1,12 @@
 import { IToken } from "../interfaces/token.interface";
 import { Token } from "../models/token.model";
+import { BaseRepository } from "./base.repository";
 
-class TokenRepository {
+class TokenRepository extends BaseRepository<IToken> {
+    constructor() {
+        super(Token);
+    }
+
     public async create(dto: Partial<IToken>): Promise<IToken> {
         return await Token.create(dto);
     }
@@ -12,13 +17,6 @@ class TokenRepository {
 
     public async deleteTokenPair(refreshToken: string): Promise<void> {
         await Token.deleteOne({ refreshToken });
-    }
-
-    public async deleteOlderThan(date: Date): Promise<number> {
-        const { deletedCount } = await Token.deleteMany({
-            createdAt: { $lt: date },
-        });
-        return deletedCount;
     }
 }
 

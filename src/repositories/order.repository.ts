@@ -21,7 +21,7 @@ class OrderRepository {
         const skip = query.pageSize * (query.page - 1);
         const limit = query.pageSize;
 
-        const pipeline: PipelineStage[] = this.buildAggregate(query, managerId);
+        const pipeline = this.buildAggregate(query, managerId);
 
         pipeline.push({
             $facet: {
@@ -45,7 +45,7 @@ class OrderRepository {
         query: IOrderQuery,
         managerId?: string,
     ): Promise<IOrderResult[]> {
-        const pipeline: PipelineStage[] = this.buildAggregate(query, managerId);
+        const pipeline = this.buildAggregate(query, managerId);
 
         return await Order.aggregate(pipeline).collation({
             locale: "uk",
@@ -276,6 +276,23 @@ class OrderRepository {
                 },
             },
             {
+                $lookup: {
+                    from: "users",
+                    localField: "comments.managerId",
+                    foreignField: "_id",
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                surname: 1,
+                            },
+                        },
+                    ],
+                    as: "commentManagers",
+                },
+            },
+            {
                 $unwind: {
                     path: "$manager",
                     preserveNullAndEmptyArrays: true,
@@ -285,6 +302,37 @@ class OrderRepository {
                 $unwind: {
                     path: "$group",
                     preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                $set: {
+                    comments: {
+                        $map: {
+                            input: "$comments",
+                            as: "comment",
+                            in: {
+                                text: "$$comment.text",
+                                createdAt: "$$comment.createdAt",
+                                manager: {
+                                    $arrayElemAt: [
+                                        {
+                                            $filter: {
+                                                input: "$commentManagers",
+                                                as: "manager",
+                                                cond: {
+                                                    $eq: [
+                                                        "$$manager._id",
+                                                        "$$comment.managerId",
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                        0,
+                                    ],
+                                },
+                            },
+                        },
+                    },
                 },
             },
             {
@@ -310,20 +358,16 @@ class OrderRepository {
         orderId: string,
         userId: string,
         comment: ICommentCreateDTO,
-    ): Promise<IOrderResult> {
-        return await Order.findByIdAndUpdate(
-            orderId,
-            {
-                $push: {
-                    comments: {
-                        ...comment,
-                        managerId: userId,
-                        createdAt: new Date(),
-                    },
+    ): Promise<void> {
+        await Order.findByIdAndUpdate(orderId, {
+            $push: {
+                comments: {
+                    ...comment,
+                    managerId: userId,
+                    createdAt: new Date(),
                 },
             },
-            { returnDocument: "after" },
-        );
+        });
     }
 
     private buildFilter(
@@ -430,12 +474,15 @@ class OrderRepository {
         return orderObject;
     }
 
-    private buildAggregate(query: IOrderQuery, managerId?: string) {
+    private buildAggregate(
+        query: IOrderQuery,
+        managerId?: string,
+    ): PipelineStage[] {
         const filterObject = this.buildFilter(query, managerId);
 
         const sortObject = this.buildSort(query);
 
-        const pipeline: any[] = [
+        return [
             {
                 $match: filterObject,
             },
@@ -536,8 +583,6 @@ class OrderRepository {
                 },
             },
         ];
-
-        return pipeline;
     }
 }
 

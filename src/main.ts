@@ -7,6 +7,7 @@ import { config } from "./configs/config";
 import { ApiError } from "./errors/api.errors";
 import { apiRouter } from "./routers/api.router";
 import { cronRunner } from "./crons";
+import { swaggerDocument, swaggerUI } from "./configs/swagger.config";
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(fileUpload());
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use("/", apiRouter);
 
 app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {

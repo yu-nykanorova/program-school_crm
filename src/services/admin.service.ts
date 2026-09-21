@@ -93,12 +93,15 @@ class AdminService {
         if (newManager.role !== UserRoleEnum.MANAGER) {
             throw new ApiError(
                 `User is not a manager`,
-                StatusCodesEnum.BAD_REQUEST,
+                StatusCodesEnum.FORBIDDEN,
             );
         }
 
         if (!newManager.status) {
-            throw new Error(`Manager ${newManager._id} status is missing`);
+            throw new ApiError(
+                `Manager ${newManager._id} status is missing`,
+                StatusCodesEnum.INTERNAL_SERVER_ERROR,
+            );
         }
 
         return {

@@ -10,10 +10,10 @@ const handler = async () => {
         const { value, unit } = timeHelper.parseConfigString(lifeTime);
         const date = timeHelper.subtractByParams(value, unit);
         const deleted = await tokenRepository.deleteOlderThan(date);
-        console.log(`Deleted ${deleted} old password hashes`);
+        console.log(`Deleted ${deleted} old token pairs`);
     } catch (e) {
         console.error(e);
     }
 };
 
-export const removeOldTokens = new CronJob("0 0 * * *", handler);
+export const removeOldTokens = new CronJob("0 0 1/15 * *", handler);

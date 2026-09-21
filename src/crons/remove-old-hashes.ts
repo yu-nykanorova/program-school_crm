@@ -13,4 +13,4 @@ const handler = async () => {
     }
 };
 
-export const removeOldHashes = new CronJob("0 0 * * *", handler);
+export const removeOldHashes = new CronJob("0 0 1 1/6 *", handler);
