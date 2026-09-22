@@ -4,7 +4,7 @@ class ToListResponse {
     public toListResDto<T, R>(
         dataResponse: IPaginatedResponse<T>,
         toPublicResDto: (item: T) => R,
-    ) {
+    ): IPaginatedResponse<R> {
         const data = dataResponse.data;
 
         return {

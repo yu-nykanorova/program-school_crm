@@ -44,3 +44,13 @@ export interface IManagerStatistics {
 export interface IManagerStatisticsDB extends IManagerStatistics {
     _id: string;
 }
+
+export type IOrderManagerResult = Pick<
+    IManagerResult,
+    "_id" | "name" | "surname" | "email"
+>;
+
+export type ICommentManagerResult = Pick<
+    IManagerResult,
+    "_id" | "name" | "surname"
+>;

@@ -5,7 +5,7 @@ import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { IComment, ICommentResult } from "./comment.interface";
 import { IGroup } from "./group.interface";
-import { IManagerResult } from "./manager.interface";
+import { IOrderManagerResult } from "./manager.interface";
 
 export interface IOrder {
     _id: string;
@@ -64,7 +64,7 @@ export interface IOrderResult {
     group: IGroup | null;
     msg: string | null;
     utm: string | null;
-    manager: IManagerResult | null;
+    manager: IOrderManagerResult | null;
     comments: ICommentResult[];
     createdAt: Date | null;
     updatedAt: Date;
@@ -98,3 +98,5 @@ export interface IOrderQuery {
     page?: number;
     pageSize?: number;
 }
+
+export type IOrderExportToFileQuery = Omit<IOrderQuery, "page" | "pageSize">;

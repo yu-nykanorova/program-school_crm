@@ -14,11 +14,8 @@ class AdminController {
                 validatedQuery: IUserQuery;
             };
             const managers = await adminService.getManagers(validatedQuery);
-            const result = toListResponse.toListResDto(
-                managers,
-                managerPresenter.toPublicResDtoWithStatistics.bind(
-                    managerPresenter.toPublicResDtoWithStatistics,
-                ),
+            const result = toListResponse.toListResDto(managers, (manager) =>
+                managerPresenter.toPublicResDtoWithStatistics(manager),
             );
             res.status(StatusCodesEnum.OK).json(result);
         } catch (e) {

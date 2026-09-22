@@ -1,4 +1,4 @@
-import { IManagerResult } from "./manager.interface";
+import { ICommentManagerResult } from "./manager.interface";
 
 export interface IComment {
     text: string;
@@ -10,6 +10,6 @@ export type ICommentCreateDTO = Pick<IComment, "text">;
 
 export interface ICommentResult {
     text: string;
-    manager: Pick<IManagerResult, "_id" | "name" | "surname">;
+    manager: ICommentManagerResult;
     createdAt: string;
 }

@@ -41,7 +41,10 @@ class AdminService {
 
         const data: IManagerWithStatistics[] = managers.map((manager) => {
             if (!manager.status) {
-                throw new Error(`Manager ${manager._id} status is missing`);
+                throw new ApiError(
+                    `Manager ${manager._id} status is missing`,
+                    StatusCodesEnum.INTERNAL_SERVER_ERROR,
+                );
             }
             const managerStatistics = statisticsMap.get(manager._id);
             return {
@@ -90,19 +93,19 @@ class AdminService {
             status: ManagerStatusEnum.NEW,
         });
 
-        if (newManager.role !== UserRoleEnum.MANAGER) {
-            throw new ApiError(
-                `User is not a manager`,
-                StatusCodesEnum.FORBIDDEN,
-            );
-        }
+        // if (newManager.role !== UserRoleEnum.MANAGER) {
+        //     throw new ApiError(
+        //         `User is not a manager`,
+        //         StatusCodesEnum.FORBIDDEN,
+        //     );
+        // }
 
-        if (!newManager.status) {
-            throw new ApiError(
-                `Manager ${newManager._id} status is missing`,
-                StatusCodesEnum.INTERNAL_SERVER_ERROR,
-            );
-        }
+        // if (!newManager.status) {
+        //     throw new ApiError(
+        //         `Manager ${newManager._id} status is missing`,
+        //         StatusCodesEnum.INTERNAL_SERVER_ERROR,
+        //     );
+        // }
 
         return {
             ...newManager,

@@ -7,6 +7,7 @@ import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import { IManagerStatisticsDB } from "../interfaces/manager.interface";
 import {
     IOrderEditDTO,
+    IOrderExportToFileQuery,
     IOrderQuery,
     IOrderResult,
     IOrdersStatistics,
@@ -42,7 +43,7 @@ class OrderRepository {
     }
 
     public async getOrdersExport(
-        query: IOrderQuery,
+        query: IOrderExportToFileQuery,
         managerId?: string,
     ): Promise<IOrderResult[]> {
         const pipeline = this.buildAggregate(query, managerId);
@@ -349,9 +350,8 @@ class OrderRepository {
         orderId: string,
         dto: IOrderEditDTO,
     ): Promise<IOrderResult | null> {
-        return await Order.findByIdAndUpdate(orderId, dto, {
-            returnDocument: "after",
-        });
+        await Order.findByIdAndUpdate(orderId, dto);
+        return await this.getOrderById(orderId);
     }
 
     public async createCommentToOrder(

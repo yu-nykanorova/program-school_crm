@@ -69,4 +69,27 @@ export class OrderValidator {
             dateTo: this.dateTo,
         },
     });
+
+    public static queryForExport = joi.object({
+        name: joi.string().regex(RegexEnum.NAME),
+        surname: joi.string().regex(RegexEnum.NAME),
+        email: this.email,
+        phone: joi.string().regex(RegexEnum.PHONE),
+        age: this.age,
+        orderStatus: this.orderStatus,
+        course: this.course,
+        courseFormat: this.courseFormat,
+        courseType: this.courseType,
+        groupId: this.groupId,
+        myOrders: this.myOrders,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+        order: joi
+            .string()
+            .valid(
+                ...Object.values(OrderQuerySortEnum),
+                ...Object.values(OrderQuerySortEnum).map((item) => `-${item}`),
+            )
+            .default(`-${OrderQuerySortEnum.ID}`),
+    });
 }

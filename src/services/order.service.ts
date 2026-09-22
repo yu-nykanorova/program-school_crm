@@ -7,6 +7,7 @@ import { ApiError } from "../errors/api.errors";
 import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import {
     IOrderEditDTO,
+    IOrderExportToFileQuery,
     IOrderQuery,
     IOrderResult,
 } from "../interfaces/order.interface";
@@ -93,7 +94,10 @@ class OrderService {
         return await orderRepository.getOrderById(orderId);
     }
 
-    public async getOrdersExport(query: IOrderQuery, payload: ITokenPayload) {
+    public async getOrdersExport(
+        query: IOrderExportToFileQuery,
+        payload: ITokenPayload,
+    ) {
         const orders = await orderRepository.getOrdersExport(
             query,
             payload.userId,

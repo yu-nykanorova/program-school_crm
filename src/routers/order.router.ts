@@ -18,7 +18,7 @@ router.get(
 
 router.get(
     "/export",
-    commonMiddleware.isQueryValid(OrderValidator.query),
+    commonMiddleware.isQueryValid(OrderValidator.queryForExport),
     orderController.getOrdersExport,
 );
 
