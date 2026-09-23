@@ -6,8 +6,8 @@ import { IAggregatedResponse } from "../interfaces/aggregated-response";
 import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import { IManagerStatisticsDB } from "../interfaces/manager.interface";
 import {
+    IOrderBaseQuery,
     IOrderEditDTO,
-    IOrderExportToFileQuery,
     IOrderQuery,
     IOrderResult,
     IOrdersStatistics,
@@ -43,7 +43,7 @@ class OrderRepository {
     }
 
     public async getOrdersExport(
-        query: IOrderExportToFileQuery,
+        query: IOrderBaseQuery,
         managerId?: string,
     ): Promise<IOrderResult[]> {
         const pipeline = this.buildAggregate(query, managerId);
@@ -371,7 +371,7 @@ class OrderRepository {
     }
 
     private buildFilter(
-        query: IOrderQuery,
+        query: IOrderBaseQuery,
         managerId?: string,
     ): Record<string, any> {
         const filterObject: Record<string, any> = {};
@@ -449,7 +449,7 @@ class OrderRepository {
         return filterObject;
     }
 
-    private buildSort(query: IOrderQuery): Record<string, 1 | -1> {
+    private buildSort(query: IOrderBaseQuery): Record<string, 1 | -1> {
         const orderObject: Record<string, 1 | -1> = {};
 
         const orderKey = query.order.startsWith("-")
@@ -475,7 +475,7 @@ class OrderRepository {
     }
 
     private buildAggregate(
-        query: IOrderQuery,
+        query: IOrderBaseQuery,
         managerId?: string,
     ): PipelineStage[] {
         const filterObject = this.buildFilter(query, managerId);

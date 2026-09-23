@@ -6,8 +6,8 @@ import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import {
+    IOrderBaseQuery,
     IOrderEditDTO,
-    IOrderExportToFileQuery,
     IOrderQuery,
     IOrderResult,
 } from "../interfaces/order.interface";
@@ -95,7 +95,7 @@ class OrderService {
     }
 
     public async getOrdersExport(
-        query: IOrderExportToFileQuery,
+        query: IOrderBaseQuery,
         payload: ITokenPayload,
     ) {
         const orders = await orderRepository.getOrdersExport(

@@ -20,12 +20,12 @@ export interface IUserCreateDTO {
     name: string;
     surname: string;
     role: UserRoleEnum;
-    password?: string | null;
+    password?: string;
     status?: ManagerStatusEnum;
 }
 
 export interface IUserQuery {
-    order?: UserQuerySortEnum;
+    order: UserQuerySortEnum;
     page?: number;
     pageSize?: number;
 }
@@ -38,6 +38,6 @@ export interface IUserResult {
     lastLogin: string | null;
     role: UserRoleEnum;
     status?: ManagerStatusEnum;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: string | null;
+    updatedAt: string | null;
 }

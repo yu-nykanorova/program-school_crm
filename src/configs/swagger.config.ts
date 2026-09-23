@@ -24,6 +24,388 @@ const swaggerDocument: OpenAPIV3.Document = {
                     "Enter your access JWT token like this - Bearer < token >",
             },
         },
+        schemas: {
+            Tokens: {
+                type: "object",
+                properties: {
+                    accessToken: {
+                        type: "string",
+                    },
+                    refreshToken: {
+                        type: "string",
+                    },
+                },
+            },
+            Order: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                    },
+                    name: {
+                        type: "string",
+                        nullable: true,
+                    },
+                    surname: {
+                        type: "string",
+                        nullable: true,
+                    },
+                    email: {
+                        type: "string",
+                        format: "email",
+                        nullable: true,
+                    },
+                    phone: {
+                        type: "string",
+                        nullable: true,
+                    },
+                    age: {
+                        type: "integer",
+                        nullable: true,
+                    },
+                    course: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/Course",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    courseFormat: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/CourseFormat",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    courseType: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/CourseType",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    orderStatus: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/OrderStatus",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    sum: {
+                        type: "number",
+                        nullable: true,
+                    },
+                    alreadyPaid: {
+                        type: "number",
+                        nullable: true,
+                    },
+                    group: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/Group",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    msg: {
+                        type: "string",
+                        nullable: true,
+                    },
+                    utm: {
+                        type: "string",
+                        nullable: true,
+                    },
+                    manager: {
+                        allOf: [
+                            {
+                                $ref: "#/components/schemas/OrderManager",
+                            },
+                        ],
+                        nullable: true,
+                    },
+                    comments: {
+                        type: "array",
+                        items: {
+                            $ref: "#/components/schemas/Comment",
+                        },
+                    },
+                    createdAt: {
+                        type: "string",
+                        format: "date-time",
+                        nullable: true,
+                    },
+                    updatedAt: {
+                        type: "string",
+                        format: "date-time",
+                    },
+                },
+            },
+            OrdersListResponse: {
+                type: "object",
+                properties: {
+                    totalItems: {
+                        type: "integer",
+                    },
+                    totalPages: {
+                        type: "integer",
+                    },
+                    prevPage: {
+                        type: "boolean",
+                    },
+                    nextPage: {
+                        type: "boolean",
+                    },
+                    data: {
+                        type: "array",
+                        items: {
+                            $ref: "#/components/schemas/Order",
+                        },
+                    },
+                },
+            },
+            OrderManager: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                    },
+                    email: {
+                        type: "string",
+                        format: "email",
+                    },
+                    name: {
+                        type: "string",
+                    },
+                    surname: {
+                        type: "string",
+                    },
+                },
+            },
+            CommentManager: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                        description: "Comment manager ID",
+                    },
+                    name: {
+                        type: "string",
+                        description: "Comment manager name",
+                    },
+                    surname: {
+                        type: "string",
+                        description: "Comment manager surname",
+                    },
+                },
+            },
+            Group: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                        description: "Group ID",
+                    },
+                    name: {
+                        type: "string",
+                        description: "Group name",
+                    },
+                },
+            },
+            Comment: {
+                type: "object",
+                properties: {
+                    text: {
+                        type: "string",
+                        description: "Comment text",
+                    },
+                    manager: {
+                        $ref: "#/components/schemas/CommentManager",
+                    },
+                    createdAt: {
+                        type: "string",
+                        format: "date-time",
+                        description: "Comment creation date",
+                    },
+                },
+            },
+            Course: {
+                type: "string",
+                enum: ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"],
+            },
+            CourseFormat: {
+                type: "string",
+                enum: ["static", "online"],
+            },
+            CourseType: {
+                type: "string",
+                enum: ["pro", "minimal", "premium", "incubator", "vip"],
+            },
+            OrderStatus: {
+                type: "string",
+                enum: ["In work", "New", "Agree", "Disagree", "Dubbing"],
+            },
+        },
+        parameters: {
+            OrderName: {
+                name: "name",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "string",
+                },
+            },
+            OrderSurname: {
+                name: "surname",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "string",
+                },
+            },
+            OrderEmail: {
+                name: "email",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "string",
+                    format: "email",
+                },
+            },
+            OrderPhone: {
+                name: "phone",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "string",
+                },
+            },
+            OrderAge: {
+                name: "age",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "integer",
+                },
+            },
+            OrderCourse: {
+                name: "course",
+                in: "query",
+                required: false,
+                schema: {
+                    $ref: "#/components/schemas/Course",
+                },
+            },
+            OrderCourseFormat: {
+                name: "courseFormat",
+                in: "query",
+                required: false,
+                schema: {
+                    $ref: "#/components/schemas/CourseFormat",
+                },
+            },
+            OrderCourseType: {
+                name: "courseType",
+                in: "query",
+                required: false,
+                schema: {
+                    $ref: "#/components/schemas/CourseType",
+                },
+            },
+            OrderStatus: {
+                name: "orderStatus",
+                in: "query",
+                required: false,
+                schema: {
+                    $ref: "#/components/schemas/OrderStatus",
+                },
+            },
+            OrderGroupId: {
+                name: "groupId",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "string",
+                },
+            },
+            MyOrders: {
+                name: "myOrders",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "boolean",
+                },
+            },
+            OrderDateFrom: {
+                name: "dateFrom",
+                in: "query",
+                required: false,
+                description: "Filter orders created from this date",
+                schema: {
+                    type: "string",
+                    format: "date-time",
+                },
+            },
+            OrderDateTo: {
+                name: "dateTo",
+                in: "query",
+                required: false,
+                description: "Filter orders created until this date",
+                schema: {
+                    type: "string",
+                    format: "date-time",
+                },
+            },
+            OrderSort: {
+                name: "order",
+                in: "query",
+                required: false,
+                description: "Sort orders",
+                schema: {
+                    type: "string",
+                    enum: [
+                        "_id",
+                        "name",
+                        "surname",
+                        "email",
+                        "phone",
+                        "age",
+                        "course",
+                        "courseFormat",
+                        "courseType",
+                        "orderStatus",
+                        "sum",
+                        "alreadyPaid",
+                        "group",
+                        "createdAt",
+                        "manager",
+                    ],
+                },
+            },
+            Page: {
+                name: "page",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "integer",
+                    minimum: 1,
+                    default: 1,
+                },
+            },
+            PageSize: {
+                name: "pageSize",
+                in: "query",
+                required: false,
+                schema: {
+                    type: "integer",
+                    minimum: 1,
+                    default: 25,
+                },
+            },
+        },
     },
     tags: [
         {
@@ -123,13 +505,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                                             },
                                         },
                                         tokens: {
-                                            type: "object",
-                                            properties: {
-                                                accessToken: { type: "string" },
-                                                refreshToken: {
-                                                    type: "string",
-                                                },
-                                            },
+                                            $ref: "#/components/schemas/Tokens",
                                         },
                                     },
                                 },
@@ -172,11 +548,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         content: {
                             "application/json": {
                                 schema: {
-                                    type: "object",
-                                    properties: {
-                                        accessToken: { type: "string" },
-                                        refreshToken: { type: "string" },
-                                    },
+                                    $ref: "#/components/schemas/Tokens",
                                 },
                             },
                         },
@@ -298,26 +670,10 @@ const swaggerDocument: OpenAPIV3.Document = {
                         },
                     },
                     {
-                        name: "page",
-                        in: "query",
-                        required: false,
-                        description: "Page number",
-                        schema: {
-                            type: "integer",
-                            minimum: 1,
-                            default: 1,
-                        },
+                        $ref: "#/components/parameters/Page",
                     },
                     {
-                        name: "pageSize",
-                        in: "query",
-                        required: false,
-                        description: "Number of managers per page",
-                        schema: {
-                            type: "integer",
-                            minimum: 1,
-                            default: 25,
-                        },
+                        $ref: "#/components/parameters/PageSize",
                     },
                 ],
                 responses: {
@@ -695,17 +1051,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                                 schema: {
                                     type: "array",
                                     items: {
-                                        type: "object",
-                                        properties: {
-                                            _id: {
-                                                type: "string",
-                                                description: "Group ID",
-                                            },
-                                            name: {
-                                                type: "string",
-                                                description: "Group name",
-                                            },
-                                        },
+                                        $ref: "#/components/schemas/Group",
                                     },
                                 },
                             },
@@ -747,17 +1093,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         content: {
                             "application/json": {
                                 schema: {
-                                    type: "object",
-                                    properties: {
-                                        _id: {
-                                            type: "string",
-                                            description: "Group ID",
-                                        },
-                                        name: {
-                                            type: "string",
-                                            description: "Group name",
-                                        },
-                                    },
+                                    $ref: "#/components/schemas/Group",
                                 },
                             },
                         },
@@ -785,175 +1121,52 @@ const swaggerDocument: OpenAPIV3.Document = {
                 ],
                 parameters: [
                     {
-                        name: "name",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderName",
                     },
                     {
-                        name: "surname",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderSurname",
                     },
                     {
-                        name: "email",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            format: "email",
-                        },
+                        $ref: "#/components/parameters/OrderEmail",
                     },
                     {
-                        name: "phone",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderPhone",
                     },
                     {
-                        name: "age",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "integer",
-                        },
+                        $ref: "#/components/parameters/OrderAge",
                     },
                     {
-                        name: "course",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"],
-                        },
+                        $ref: "#/components/parameters/OrderCourse",
                     },
                     {
-                        name: "courseFormat",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: ["static", "online"],
-                        },
+                        $ref: "#/components/parameters/OrderCourseFormat",
                     },
                     {
-                        name: "courseType",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "pro",
-                                "minimal",
-                                "premium",
-                                "incubator",
-                                "vip",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderCourseType",
                     },
                     {
-                        name: "orderStatus",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "In work",
-                                "New",
-                                "Agree",
-                                "Disagree",
-                                "Dubbing",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderStatus",
                     },
                     {
-                        name: "groupId",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderGroupId",
                     },
                     {
-                        name: "myOrders",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "boolean",
-                        },
+                        $ref: "#/components/parameters/MyOrders",
                     },
                     {
-                        name: "dateFrom",
-                        in: "query",
-                        required: false,
-                        description: "Filter orders created from this date",
-                        schema: {
-                            type: "string",
-                            format: "date-time",
-                        },
+                        $ref: "#/components/parameters/OrderDateFrom",
                     },
                     {
-                        name: "dateTo",
-                        in: "query",
-                        required: false,
-                        description: "Filter orders created until this date",
-                        schema: {
-                            type: "string",
-                            format: "date-time",
-                        },
+                        $ref: "#/components/parameters/OrderDateTo",
                     },
                     {
-                        name: "order",
-                        in: "query",
-                        required: false,
-                        description: "Sort orders",
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "_id",
-                                "name",
-                                "surname",
-                                "email",
-                                "phone",
-                                "age",
-                                "course",
-                                "courseFormat",
-                                "courseType",
-                                "orderStatus",
-                                "sum",
-                                "alreadyPaid",
-                                "group",
-                                "createdAt",
-                                "manager",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderSort",
                     },
                     {
-                        name: "page",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "integer",
-                            minimum: 1,
-                            default: 1,
-                        },
+                        $ref: "#/components/parameters/Page",
                     },
                     {
-                        name: "pageSize",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "integer",
-                            minimum: 1,
-                            default: 25,
-                        },
+                        $ref: "#/components/parameters/PageSize",
                     },
                 ],
                 responses: {
@@ -962,192 +1175,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         content: {
                             "application/json": {
                                 schema: {
-                                    type: "object",
-                                    properties: {
-                                        totalItems: {
-                                            type: "integer",
-                                        },
-                                        totalPages: {
-                                            type: "integer",
-                                        },
-                                        prevPage: {
-                                            type: "boolean",
-                                        },
-                                        nextPage: {
-                                            type: "boolean",
-                                        },
-                                        data: {
-                                            type: "array",
-                                            items: {
-                                                type: "object",
-                                                properties: {
-                                                    _id: {
-                                                        type: "string",
-                                                    },
-                                                    name: {
-                                                        type: "string",
-                                                        nullable: true,
-                                                    },
-                                                    surname: {
-                                                        type: "string",
-                                                        nullable: true,
-                                                    },
-                                                    email: {
-                                                        type: "string",
-                                                        format: "email",
-                                                        nullable: true,
-                                                    },
-                                                    phone: {
-                                                        type: "string",
-                                                        nullable: true,
-                                                    },
-                                                    age: {
-                                                        type: "integer",
-                                                        nullable: true,
-                                                    },
-                                                    course: {
-                                                        type: "string",
-                                                        enum: [
-                                                            "FS",
-                                                            "QACX",
-                                                            "JCX",
-                                                            "JSCX",
-                                                            "FE",
-                                                            "PCX",
-                                                        ],
-                                                        nullable: true,
-                                                    },
-                                                    courseFormat: {
-                                                        type: "string",
-                                                        enum: [
-                                                            "static",
-                                                            "online",
-                                                        ],
-                                                        nullable: true,
-                                                    },
-                                                    courseType: {
-                                                        type: "string",
-                                                        enum: [
-                                                            "pro",
-                                                            "minimal",
-                                                            "premium",
-                                                            "incubator",
-                                                            "vip",
-                                                        ],
-                                                        nullable: true,
-                                                    },
-                                                    orderStatus: {
-                                                        type: "string",
-                                                        enum: [
-                                                            "In work",
-                                                            "New",
-                                                            "Agree",
-                                                            "Disagree",
-                                                            "Dubbing",
-                                                        ],
-                                                        nullable: true,
-                                                    },
-                                                    sum: {
-                                                        type: "number",
-                                                        nullable: true,
-                                                    },
-                                                    alreadyPaid: {
-                                                        type: "number",
-                                                        nullable: true,
-                                                    },
-                                                    group: {
-                                                        type: "object",
-                                                        nullable: true,
-                                                        properties: {
-                                                            _id: {
-                                                                type: "string",
-                                                            },
-                                                            name: {
-                                                                type: "string",
-                                                            },
-                                                        },
-                                                    },
-                                                    msg: {
-                                                        type: "string",
-                                                        nullable: true,
-                                                    },
-                                                    utm: {
-                                                        type: "string",
-                                                        nullable: true,
-                                                    },
-                                                    manager: {
-                                                        type: "object",
-                                                        nullable: true,
-                                                        properties: {
-                                                            _id: {
-                                                                type: "string",
-                                                            },
-                                                            email: {
-                                                                type: "string",
-                                                                format: "email",
-                                                            },
-                                                            name: {
-                                                                type: "string",
-                                                            },
-                                                            surname: {
-                                                                type: "string",
-                                                            },
-                                                        },
-                                                    },
-                                                    comments: {
-                                                        type: "array",
-                                                        items: {
-                                                            type: "object",
-                                                            properties: {
-                                                                text: {
-                                                                    type: "string",
-                                                                    description:
-                                                                        "Comment text",
-                                                                },
-                                                                manager: {
-                                                                    type: "object",
-                                                                    properties:
-                                                                        {
-                                                                            _id: {
-                                                                                type: "string",
-                                                                                description:
-                                                                                    "Comment manager ID",
-                                                                            },
-                                                                            name: {
-                                                                                type: "string",
-                                                                                description:
-                                                                                    "Comment manager name",
-                                                                            },
-                                                                            surname:
-                                                                                {
-                                                                                    type: "string",
-                                                                                    description:
-                                                                                        "Comment manager surname",
-                                                                                },
-                                                                        },
-                                                                },
-                                                                createdAt: {
-                                                                    type: "string",
-                                                                    format: "date-time",
-                                                                    description:
-                                                                        "Comment creation date",
-                                                                },
-                                                            },
-                                                        },
-                                                    },
-                                                    createdAt: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                        nullable: true,
-                                                    },
-                                                    updatedAt: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    },
+                                    $ref: "#/components/schemas/OrdersListResponse",
                                 },
                             },
                         },
@@ -1172,155 +1200,46 @@ const swaggerDocument: OpenAPIV3.Document = {
                 ],
                 parameters: [
                     {
-                        name: "name",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderName",
                     },
                     {
-                        name: "surname",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderSurname",
                     },
                     {
-                        name: "email",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            format: "email",
-                        },
+                        $ref: "#/components/parameters/OrderEmail",
                     },
                     {
-                        name: "phone",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderPhone",
                     },
                     {
-                        name: "age",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "integer",
-                        },
+                        $ref: "#/components/parameters/OrderAge",
                     },
                     {
-                        name: "course",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"],
-                        },
+                        $ref: "#/components/parameters/OrderCourse",
                     },
                     {
-                        name: "courseFormat",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: ["static", "online"],
-                        },
+                        $ref: "#/components/parameters/OrderCourseFormat",
                     },
                     {
-                        name: "courseType",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "pro",
-                                "minimal",
-                                "premium",
-                                "incubator",
-                                "vip",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderCourseType",
                     },
                     {
-                        name: "orderStatus",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "In work",
-                                "New",
-                                "Agree",
-                                "Disagree",
-                                "Dubbing",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderStatus",
                     },
                     {
-                        name: "groupId",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "string",
-                        },
+                        $ref: "#/components/parameters/OrderGroupId",
                     },
                     {
-                        name: "myOrders",
-                        in: "query",
-                        required: false,
-                        schema: {
-                            type: "boolean",
-                        },
+                        $ref: "#/components/parameters/MyOrders",
                     },
                     {
-                        name: "dateFrom",
-                        in: "query",
-                        required: false,
-                        description: "Filter orders created from this date",
-                        schema: {
-                            type: "string",
-                            format: "date-time",
-                        },
+                        $ref: "#/components/parameters/OrderDateFrom",
                     },
                     {
-                        name: "dateTo",
-                        in: "query",
-                        required: false,
-                        description: "Filter orders created until this date",
-                        schema: {
-                            type: "string",
-                            format: "date-time",
-                        },
+                        $ref: "#/components/parameters/OrderDateTo",
                     },
                     {
-                        name: "order",
-                        in: "query",
-                        required: false,
-                        description: "Sort orders",
-                        schema: {
-                            type: "string",
-                            enum: [
-                                "_id",
-                                "name",
-                                "surname",
-                                "email",
-                                "phone",
-                                "age",
-                                "course",
-                                "courseFormat",
-                                "courseType",
-                                "orderStatus",
-                                "sum",
-                                "alreadyPaid",
-                                "group",
-                                "createdAt",
-                                "manager",
-                            ],
-                        },
+                        $ref: "#/components/parameters/OrderSort",
                     },
                 ],
                 responses: {
@@ -1461,157 +1380,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         content: {
                             "application/json": {
                                 schema: {
-                                    type: "object",
-                                    properties: {
-                                        _id: {
-                                            type: "string",
-                                        },
-                                        name: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        surname: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        email: {
-                                            type: "string",
-                                            format: "email",
-                                            nullable: true,
-                                        },
-                                        phone: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        age: {
-                                            type: "integer",
-                                            nullable: true,
-                                        },
-                                        course: {
-                                            type: "string",
-                                            enum: [
-                                                "FS",
-                                                "QACX",
-                                                "JCX",
-                                                "JSCX",
-                                                "FE",
-                                                "PCX",
-                                            ],
-                                            nullable: true,
-                                        },
-                                        courseFormat: {
-                                            type: "string",
-                                            enum: ["static", "online"],
-                                            nullable: true,
-                                        },
-                                        courseType: {
-                                            type: "string",
-                                            enum: [
-                                                "pro",
-                                                "minimal",
-                                                "premium",
-                                                "incubator",
-                                                "vip",
-                                            ],
-                                            nullable: true,
-                                        },
-                                        orderStatus: {
-                                            type: "string",
-                                            enum: [
-                                                "In work",
-                                                "New",
-                                                "Agree",
-                                                "Disagree",
-                                                "Dubbing",
-                                            ],
-                                            nullable: true,
-                                        },
-                                        sum: {
-                                            type: "number",
-                                            nullable: true,
-                                        },
-                                        alreadyPaid: {
-                                            type: "number",
-                                            nullable: true,
-                                        },
-                                        group: {
-                                            type: "object",
-                                            nullable: true,
-                                            properties: {
-                                                _id: {
-                                                    type: "string",
-                                                },
-                                                name: {
-                                                    type: "string",
-                                                },
-                                            },
-                                        },
-                                        msg: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        utm: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        manager: {
-                                            type: "object",
-                                            nullable: true,
-                                            properties: {
-                                                _id: {
-                                                    type: "string",
-                                                },
-                                                email: {
-                                                    type: "string",
-                                                    format: "email",
-                                                },
-                                                name: {
-                                                    type: "string",
-                                                },
-                                                surname: {
-                                                    type: "string",
-                                                },
-                                            },
-                                        },
-                                        comments: {
-                                            type: "array",
-                                            items: {
-                                                type: "object",
-                                                properties: {
-                                                    text: {
-                                                        type: "string",
-                                                    },
-                                                    manager: {
-                                                        type: "object",
-                                                        properties: {
-                                                            _id: {
-                                                                type: "string",
-                                                            },
-                                                            name: {
-                                                                type: "string",
-                                                            },
-                                                            surname: {
-                                                                type: "string",
-                                                            },
-                                                        },
-                                                    },
-                                                    createdAt: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                    },
-                                                },
-                                            },
-                                        },
-                                        createdAt: {
-                                            type: "string",
-                                            format: "date-time",
-                                            nullable: true,
-                                        },
-                                        updatedAt: {
-                                            type: "string",
-                                            format: "date-time",
-                                        },
-                                    },
+                                    $ref: "#/components/schemas/Order",
                                 },
                             },
                         },
@@ -1632,8 +1401,70 @@ const swaggerDocument: OpenAPIV3.Document = {
             },
         },
         "/orders/{id}/comments": {
-
-        }
+            post: {
+                tags: ["Orders"],
+                summary: "Create comment to order",
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                parameters: [
+                    {
+                        name: "id",
+                        in: "path",
+                        required: true,
+                        description: "Order ID",
+                        schema: {
+                            type: "string",
+                        },
+                    },
+                ],
+                requestBody: {
+                    required: true,
+                    content: {
+                        "application/json": {
+                            schema: {
+                                type: "object",
+                                required: ["text"],
+                                properties: {
+                                    text: {
+                                        type: "string",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: {
+                    201: {
+                        description: "Comment created successfully",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "array",
+                                    items: {
+                                        $ref: "#/components/schemas/Comment",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    400: {
+                        description: "Invalid user id or request body",
+                    },
+                    401: {
+                        description: "Unauthorized",
+                    },
+                    403: {
+                        description: "You cannot edit this order",
+                    },
+                    404: {
+                        description: "Order not found",
+                    },
+                },
+            },
+        },
     },
 };
 

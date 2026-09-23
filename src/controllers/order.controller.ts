@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ICommentCreateDTO } from "../interfaces/comment.interface";
-import { IOrderEditDTO, IOrderExportToFileQuery, IOrderQuery } from "../interfaces/order.interface";
+import {
+    IOrderBaseQuery,
+    IOrderEditDTO,
+    IOrderQuery,
+} from "../interfaces/order.interface";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { orderService } from "../services/order.service";
 
@@ -70,7 +74,7 @@ class OrderController {
     ) {
         try {
             const { validatedQuery } = req as any as {
-                validatedQuery: IOrderExportToFileQuery;
+                validatedQuery: IOrderBaseQuery;
             };
             const payload = res.locals.tokenPayload as ITokenPayload;
             const file = await orderService.getOrdersExport(

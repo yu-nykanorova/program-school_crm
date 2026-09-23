@@ -4,10 +4,10 @@ import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
 
 import { config } from "./configs/config";
+import { swaggerDocument, swaggerUI } from "./configs/swagger.config";
+import { cronRunner } from "./crons";
 import { ApiError } from "./errors/api.errors";
 import { apiRouter } from "./routers/api.router";
-import { cronRunner } from "./crons";
-import { swaggerDocument, swaggerUI } from "./configs/swagger.config";
 
 const app = express();
 
@@ -39,7 +39,6 @@ const dbConnection = async () => {
             await mongoose.connect(config.MONGO_URI);
             dbCon = true;
             console.log("Database available!!!");
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             console.error("Database connection error:", error);
             console.log("Database unavailable, wait 5 seconds");

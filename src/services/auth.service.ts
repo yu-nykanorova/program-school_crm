@@ -43,6 +43,13 @@ class AuthService {
             throw new ApiError("Account is banned", StatusCodesEnum.FORBIDDEN);
         }
 
+        if (!user.password) {
+            throw new ApiError(
+                "Email or password invalid",
+                StatusCodesEnum.UNAUTHORIZED,
+            );
+        }
+
         const isValidPassword = await passwordService.comparePassword(
             dto.password,
             user.password,
@@ -103,8 +110,23 @@ class AuthService {
             user.role === UserRoleEnum.MANAGER &&
             user.status === ManagerStatusEnum.ACTIVE
         ) {
-            await this.checkPasswordsEquality(dto.password, user);
+            const currentPassword = user.password;
+
+            if (!currentPassword) {
+                throw new ApiError(
+                    "Manager password is missing",
+                    StatusCodesEnum.INTERNAL_SERVER_ERROR,
+                );
+            }
+
+            await this.checkPasswordsEquality(
+                dto.password,
+                currentPassword,
+                user._id,
+            );
         }
+
+        const oldPassword = user.password;
 
         const newPassword = await passwordService.hashPassword(dto.password);
 
@@ -112,10 +134,12 @@ class AuthService {
             password: newPassword,
         });
 
-        await oldHashesRepository.create({
-            _userId: payload.userId,
-            hash: user.password,
-        });
+        if (oldPassword) {
+            await oldHashesRepository.create({
+                _userId: payload.userId,
+                hash: oldPassword,
+            });
+        }
 
         await actionTokenRepository.deleteActionToken({
             actionToken,
@@ -124,11 +148,12 @@ class AuthService {
 
     private async checkPasswordsEquality(
         newPassword: string,
-        user: IUser,
+        currentPassword: string,
+        userId: string,
     ): Promise<void> {
         const isCurrentPassword = await passwordService.comparePassword(
             newPassword,
-            user.password,
+            currentPassword,
         );
 
         if (isCurrentPassword) {
@@ -139,7 +164,7 @@ class AuthService {
         }
 
         const oldHashes = await oldHashesRepository.findByParams({
-            _userId: user._id,
+            _userId: userId,
         });
 
         if (oldHashes) {

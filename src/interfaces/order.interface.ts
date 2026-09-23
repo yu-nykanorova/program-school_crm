@@ -80,7 +80,7 @@ export interface IOrdersStatistics {
     dubbing: number | null;
 }
 
-export interface IOrderQuery {
+export interface IOrderBaseQuery {
     name?: string;
     surname?: string;
     email?: string;
@@ -91,12 +91,13 @@ export interface IOrderQuery {
     courseType?: OrderCourseTypeEnum;
     orderStatus?: OrderStatusEnum;
     groupId?: string;
-    myOrders?: boolean;
     dateFrom?: string;
     dateTo?: string;
-    order?: OrderQuerySortEnum;
-    page?: number;
-    pageSize?: number;
+    order: OrderQuerySortEnum;
 }
 
-export type IOrderExportToFileQuery = Omit<IOrderQuery, "page" | "pageSize">;
+export interface IOrderQuery extends IOrderBaseQuery {
+    myOrders?: boolean;
+    page: number;
+    pageSize: number;
+}

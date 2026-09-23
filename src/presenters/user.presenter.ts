@@ -9,8 +9,8 @@ class UserPresenter {
             surname: user.surname,
             role: user.role,
             lastLogin: user.lastLogin ? user.lastLogin.toString() : null,
-            createdAt: user.createdAt.toString(),
-            updatedAt: user.updatedAt.toString(),
+            createdAt: user.createdAt ? user.createdAt.toString() : null,
+            updatedAt: user.updatedAt ? user.updatedAt.toString() : null,
         };
     }
 }
