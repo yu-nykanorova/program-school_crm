@@ -56,7 +56,16 @@ class OrderService {
                 : {}),
         };
 
-        return await orderRepository.editOrderById(orderId, updatedDto);
+        const updatedOrder = await orderRepository.editOrderById(
+            orderId,
+            updatedDto,
+        );
+
+        if (!updatedOrder) {
+            throw new ApiError("Order not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return updatedOrder;
     }
 
     public async createCommentToOrder(
@@ -91,7 +100,7 @@ class OrderService {
             await orderRepository.editOrderById(orderId, updateOrderData);
         }
 
-        return await orderRepository.getOrderById(orderId);
+        return await this.getOrderOrThrow(orderId);
     }
 
     public async getOrdersExport(
@@ -149,9 +158,9 @@ class OrderService {
                 orderStatus: item.orderStatus,
                 sum: item.sum,
                 alreadyPaid: item.alreadyPaid,
-                group: item.group.name,
+                group: item.group?.name,
                 createdAt: item.createdAt,
-                manager: item.manager.name,
+                manager: item.manager?.name,
             });
         });
 

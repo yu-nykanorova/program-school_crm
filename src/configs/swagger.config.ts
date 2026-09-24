@@ -64,35 +64,19 @@ const swaggerDocument: OpenAPIV3.Document = {
                         nullable: true,
                     },
                     course: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/Course",
-                            },
-                        ],
+                        $ref: "#/components/schemas/Course",
                         nullable: true,
                     },
                     courseFormat: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/CourseFormat",
-                            },
-                        ],
+                        $ref: "#/components/schemas/CourseFormat",
                         nullable: true,
                     },
                     courseType: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/CourseType",
-                            },
-                        ],
+                        $ref: "#/components/schemas/CourseType",
                         nullable: true,
                     },
                     orderStatus: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/OrderStatus",
-                            },
-                        ],
+                        $ref: "#/components/schemas/OrderStatus",
                         nullable: true,
                     },
                     sum: {
@@ -104,11 +88,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         nullable: true,
                     },
                     group: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/Group",
-                            },
-                        ],
+                        $ref: "#/components/schemas/Group",
                         nullable: true,
                     },
                     msg: {
@@ -120,11 +100,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         nullable: true,
                     },
                     manager: {
-                        allOf: [
-                            {
-                                $ref: "#/components/schemas/OrderManager",
-                            },
-                        ],
+                        $ref: "#/components/schemas/OrderManager",
                         nullable: true,
                     },
                     comments: {
