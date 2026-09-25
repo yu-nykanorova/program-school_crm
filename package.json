@@ -9,7 +9,7 @@
     "build": "tsc",
     "start:prod": "node dist/main.js",
     "seed": "tsx scripts/seed/seed.ts",
-    "import:orders": "tsx scripts/import-orders.ts"
+    "import:orders": "tsx scripts/import-orders-dump.ts"
   },
   "dependencies": {
     "express": "^5.2.1",
