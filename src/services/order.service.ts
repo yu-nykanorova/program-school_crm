@@ -20,9 +20,11 @@ class OrderService {
         query: IOrderQuery,
         payload: ITokenPayload,
     ): Promise<IPaginatedResponse<IOrderResult>> {
+        const managerId = query.myOrders ? payload.userId : undefined;
+
         const dataFromDB = await orderRepository.getOrders(
             query,
-            payload.userId,
+            managerId,
         );
 
         const orders = dataFromDB.data;
