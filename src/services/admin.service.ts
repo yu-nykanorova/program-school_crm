@@ -31,6 +31,7 @@ class AdminService {
         const totalPages = Math.ceil(totalItems / pageSize);
 
         const managerIds = managers.map((manager) => manager._id);
+
         const statistics =
             await orderRepository.getManagersStatistics(managerIds);
 

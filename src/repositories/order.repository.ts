@@ -173,6 +173,8 @@ class OrderRepository {
                         $in: objectManagerIds,
                     },
                 },
+            },
+            {
                 $group: {
                     _id: "$managerId",
                     total: { $sum: 1 },
@@ -240,7 +242,7 @@ class OrderRepository {
             },
         ]);
 
-        return result;
+        return result ?? [];
     }
 
     public async getOrderById(orderId: string): Promise<IOrderResult | null> {
