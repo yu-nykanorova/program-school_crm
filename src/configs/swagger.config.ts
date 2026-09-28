@@ -143,6 +143,87 @@ const swaggerDocument: OpenAPIV3.Document = {
                     },
                 },
             },
+            Manager: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                        description: "Manager ID",
+                        example: "68d123456789abcdef123456",
+                    },
+                    email: {
+                        type: "string",
+                        format: "email",
+                        example: "manager@example.com",
+                    },
+                    name: {
+                        type: "string",
+                        example: "Ivan",
+                    },
+                    surname: {
+                        type: "string",
+                        example: "Demon",
+                    },
+                    lastLogin: {
+                        type: "string",
+                        format: "date-time",
+                        nullable: true,
+                        example: null,
+                    },
+                    role: {
+                        type: "string",
+                        enum: ["manager"],
+                        example: "manager",
+                    },
+                    status: {
+                        type: "string",
+                        enum: ["new", "active", "banned"],
+                        example: "new",
+                    },
+                    createdAt: {
+                        type: "string",
+                        format: "date-time",
+                        example: "2026-09-27T19:30:00.000Z",
+                    },
+                    updatedAt: {
+                        type: "string",
+                        format: "date-time",
+                        example: "2026-09-27T19:30:00.000Z",
+                    },
+                },
+            },
+            ManagerWithStatistics: {
+                allOf: [
+                    {
+                        $ref: "#/components/schemas/Manager",
+                    },
+                    {
+                        type: "object",
+                        properties: {
+                            statistics: {
+                                type: "object",
+                                properties: {
+                                    total: {
+                                        type: "integer",
+                                    },
+                                    inWork: {
+                                        type: "integer",
+                                    },
+                                    agree: {
+                                        type: "integer",
+                                    },
+                                    disagree: {
+                                        type: "integer",
+                                    },
+                                    dubbing: {
+                                        type: "integer",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                ],
+            },
             OrderManager: {
                 type: "object",
                 properties: {
@@ -675,69 +756,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                                         data: {
                                             type: "array",
                                             items: {
-                                                type: "object",
-                                                properties: {
-                                                    _id: {
-                                                        type: "string",
-                                                        description:
-                                                            "Manager ID",
-                                                    },
-                                                    email: {
-                                                        type: "string",
-                                                        format: "email",
-                                                    },
-                                                    name: {
-                                                        type: "string",
-                                                    },
-                                                    surname: {
-                                                        type: "string",
-                                                    },
-                                                    role: {
-                                                        type: "string",
-                                                        enum: ["manager"],
-                                                    },
-                                                    status: {
-                                                        type: "string",
-                                                        enum: [
-                                                            "new",
-                                                            "active",
-                                                            "banned",
-                                                        ],
-                                                    },
-                                                    lastLogin: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                        nullable: true,
-                                                    },
-                                                    createdAt: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                    },
-                                                    updatedAt: {
-                                                        type: "string",
-                                                        format: "date-time",
-                                                    },
-                                                    statistics: {
-                                                        type: "object",
-                                                        properties: {
-                                                            total: {
-                                                                type: "integer",
-                                                            },
-                                                            inWork: {
-                                                                type: "integer",
-                                                            },
-                                                            agree: {
-                                                                type: "integer",
-                                                            },
-                                                            disagree: {
-                                                                type: "integer",
-                                                            },
-                                                            dubbing: {
-                                                                type: "integer",
-                                                            },
-                                                        },
-                                                    },
-                                                },
+                                                $ref: "#/components/schemas/ManagerWithStatistics",
                                             },
                                         },
                                     },
@@ -791,57 +810,10 @@ const swaggerDocument: OpenAPIV3.Document = {
                         content: {
                             "application/json": {
                                 schema: {
-                                    type: "object",
-                                    properties: {
-                                        _id: {
-                                            type: "string",
-                                            example: "68d123456789abcdef123456",
-                                        },
-                                        email: {
-                                            type: "string",
-                                            format: "email",
-                                            example: "manager@example.com",
-                                        },
-                                        name: {
-                                            type: "string",
-                                            example: "Ivan",
-                                        },
-                                        surname: {
-                                            type: "string",
-                                            example: "Demon",
-                                        },
-                                        lastLogin: {
-                                            type: "string",
-                                            format: "date-time",
-                                            nullable: true,
-                                            example: null,
-                                        },
-                                        role: {
-                                            type: "string",
-                                            enum: ["manager"],
-                                            example: "manager",
-                                        },
-                                        status: {
-                                            type: "string",
-                                            enum: ["new", "active", "banned"],
-                                            example: "new",
-                                        },
-                                        createdAt: {
-                                            type: "string",
-                                            format: "date-time",
-                                            nullable: true,
-                                            example: "2026-09-27T19:30:00.000Z",
-                                        },
-                                        updatedAt: {
-                                            type: "string",
-                                            format: "date-time",
-                                            nullable: true,
-                                            example: "2026-09-27T19:30:00.000Z",
-                                        },
-                                    }
-                                }
-                            }
-                        }
+                                    $ref: "#/components/schemas/Manager",
+                                },
+                            },
+                        },
                     },
                     400: {
                         description: "Request body is invalid",
