@@ -143,6 +143,56 @@ const swaggerDocument: OpenAPIV3.Document = {
                     },
                 },
             },
+            User: {
+                type: "object",
+                properties: {
+                    _id: {
+                        type: "string",
+                        description: "MongoDB user ID",
+                    },
+                    email: {
+                        type: "string",
+                        format: "email",
+                    },
+                    name: {
+                        type: "string",
+                    },
+                    surname: {
+                        type: "string",
+                    },
+                    lastLogin: {
+                        type: "string",
+                        format: "date-time",
+                        nullable: true,
+                    },
+                    role: {
+                        type: "string",
+                        enum: ["admin", "manager"],
+                    },
+                    status: {
+                        type: "string",
+                        enum: ["new", "active", "banned"],
+                    },
+                    createdAt: {
+                        type: "string",
+                        format: "date-time",
+                    },
+                    updatedAt: {
+                        type: "string",
+                        format: "date-time",
+                    },
+                },
+                required: [
+                    "_id",
+                    "email",
+                    "name",
+                    "surname",
+                    "lastLogin",
+                    "role",
+                    "createdAt",
+                    "updatedAt",
+                ],
+            },
             Manager: {
                 type: "object",
                 properties: {
@@ -512,54 +562,10 @@ const swaggerDocument: OpenAPIV3.Document = {
                             "application/json": {
                                 schema: {
                                     type: "object",
-                                    required: [
-                                        "_id",
-                                        "email",
-                                        "name",
-                                        "surname",
-                                        "lastLogin",
-                                        "role",
-                                        "createdAt",
-                                        "updatedAt",
-                                    ],
+                                    required: ["user", "tokens"],
                                     properties: {
                                         user: {
-                                            type: "object",
-                                            properties: {
-                                                _id: {
-                                                    type: "string",
-                                                    description:
-                                                        "MongoDB user ID",
-                                                },
-                                                email: { type: "string" },
-                                                name: { type: "string" },
-                                                surname: { type: "string" },
-                                                lastLogin: {
-                                                    type: "string",
-                                                    format: "date-time",
-                                                    nullable: true,
-                                                },
-                                                role: {
-                                                    type: "string",
-                                                    enum: ["admin", "manager"],
-                                                },
-                                                status: {
-                                                    type: "string",
-                                                    enum: [
-                                                        "new",
-                                                        "active",
-                                                        "banned",
-                                                    ],
-                                                },
-                                                createdAt: {
-                                                    type: "string",
-                                                    format: "date-time",
-                                                },
-                                                updatedAt: {
-                                                    type: "string",
-                                                    format: "date-time",
-                                                },
-                                            },
+                                            $ref: "#/components/schemas/User",
                                         },
                                         tokens: {
                                             $ref: "#/components/schemas/Tokens",
@@ -577,6 +583,37 @@ const swaggerDocument: OpenAPIV3.Document = {
                     },
                     403: {
                         description: "Account is not activated or banned",
+                    },
+                },
+            },
+        },
+        "/auth/me": {
+            get: {
+                tags: ["Auth"],
+                summary: "Get current user",
+                description: "Returns the authenticated user's information.",
+                security: [
+                    {
+                        bearerAuth: [],
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Current user information",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    $ref: "#/components/schemas/User",
+                                },
+                            },
+                        },
+                    },
+                    401: {
+                        description:
+                            "Unauthorized - access token is missing, invalid, or expired",
+                    },
+                    404: {
+                        description: "User not found",
                     },
                 },
             },

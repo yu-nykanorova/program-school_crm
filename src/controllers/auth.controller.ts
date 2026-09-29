@@ -5,6 +5,7 @@ import { IActivate, IAuth } from "../interfaces/auth.interface";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { userPresenter } from "../presenters/user.presenter";
 import { authService } from "../services/auth.service";
+import { userService } from "../services/user.service";
 
 class AuthController {
     public async login(req: Request, res: Response, next: NextFunction) {
@@ -16,6 +17,18 @@ class AuthController {
                 user: result,
                 tokens: data.tokens,
             });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async me(request: Request, res: Response, next: NextFunction) {
+        try {
+            const payload = res.locals.tokenPayload as ITokenPayload;
+            const { userId } = payload;
+            const user = await userService.getUserOrThrow(userId);
+            const result = userPresenter.toPublicResDto(user);
+            res.status(StatusCodesEnum.OK).json(result);
         } catch (e) {
             next(e);
         }
@@ -54,7 +67,7 @@ class AuthController {
                 confirmPassword,
             };
 
-            await authService.activate(dto, payload, actionToken);
+            await authService.activate(actionToken, payload, dto);
             res.sendStatus(StatusCodesEnum.NO_CONTENT);
         } catch (e) {
             next(e);

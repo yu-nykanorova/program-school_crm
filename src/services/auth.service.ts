@@ -93,9 +93,9 @@ class AuthService {
     }
 
     public async activate(
-        dto: IActivate,
-        payload: ITokenPayload,
         actionToken: string,
+        payload: ITokenPayload,
+        dto: IActivate,
     ): Promise<void> {
         const user = await userService.getUserOrThrow(payload.userId);
 
