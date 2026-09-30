@@ -93,11 +93,11 @@ export interface IOrderBaseQuery {
     groupId?: string;
     dateFrom?: string;
     dateTo?: string;
+    myOrders?: boolean;
     order: OrderQuerySortEnum;
 }
 
 export interface IOrderQuery extends IOrderBaseQuery {
-    myOrders?: boolean;
     page: number;
     pageSize: number;
 }

@@ -22,10 +22,7 @@ class OrderService {
     ): Promise<IPaginatedResponse<IOrderResult>> {
         const managerId = query.myOrders ? payload.userId : undefined;
 
-        const dataFromDB = await orderRepository.getOrders(
-            query,
-            managerId,
-        );
+        const dataFromDB = await orderRepository.getOrders(query, managerId);
 
         const orders = dataFromDB.data;
         const totalItems = dataFromDB.totalItems;
@@ -104,15 +101,13 @@ class OrderService {
 
         return await this.getOrderOrThrow(orderId);
     }
-
     public async getOrdersExport(
         query: IOrderBaseQuery,
         payload: ITokenPayload,
     ) {
-        const orders = await orderRepository.getOrdersExport(
-            query,
-            payload.userId,
-        );
+        const managerId = query.myOrders ? payload.userId : undefined;
+
+        const orders = await orderRepository.getOrdersExport(query, managerId);
 
         return await this.exportToExcel(orders);
     }
