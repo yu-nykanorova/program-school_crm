@@ -41,8 +41,8 @@ class AdminController {
     public async banManager(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.params.id as string;
-            await adminService.banManager(id);
-            res.sendStatus(StatusCodesEnum.NO_CONTENT);
+            const status = await adminService.banManager(id);
+            res.status(StatusCodesEnum.OK).json(status);
         } catch (e) {
             next(e);
         }
@@ -51,8 +51,8 @@ class AdminController {
     public async unbanManager(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.params.id as string;
-            await adminService.unbanManager(id);
-            res.sendStatus(StatusCodesEnum.NO_CONTENT);
+            const status = await adminService.unbanManager(id);
+            res.status(StatusCodesEnum.OK).json(status);
         } catch (e) {
             next(e);
         }

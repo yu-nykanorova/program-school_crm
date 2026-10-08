@@ -33,6 +33,11 @@ export interface IManagerWithStatisticsResult extends IManagerResult {
     statistics: IManagerStatistics;
 }
 
+export interface IManagerStatusResult {
+    _id: string;
+    status: ManagerStatusEnum;
+}
+
 export interface IManagerStatistics {
     total: number;
     inWork: number;

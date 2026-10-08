@@ -6,11 +6,12 @@ import {
     IManager,
     IManagerCreateDTO,
     IManagerStatisticsDB,
+    IManagerStatusResult,
     IManagerWithStatistics,
 } from "../interfaces/manager.interface";
 import { IOrdersStatistics } from "../interfaces/order.interface";
 import { IPaginatedResponse } from "../interfaces/paginated-response";
-import { IUser, IUserQuery } from "../interfaces/user.interface";
+import { IUserQuery } from "../interfaces/user.interface";
 import { actionTokenRepository } from "../repositories/action-token.repository";
 import { orderRepository } from "../repositories/order.repository";
 import { userRepository } from "../repositories/user.repository";
@@ -108,34 +109,20 @@ class AdminService {
         };
     }
 
-    public async banManager(managerId: string): Promise<void> {
-        const manager = await this.getManager(managerId);
-
-        if (manager.status === ManagerStatusEnum.BANNED) {
-            throw new ApiError(
-                "Manager already banned",
-                StatusCodesEnum.BAD_REQUEST,
-            );
-        }
-
-        await userRepository.updateUser(managerId, {
-            status: ManagerStatusEnum.BANNED,
-        });
+    public async banManager(managerId: string): Promise<IManagerStatusResult> {
+        return await this.changeManagerStatus(
+            managerId,
+            ManagerStatusEnum.BANNED,
+        );
     }
 
-    public async unbanManager(managerId: string): Promise<void> {
-        const manager = await this.getManager(managerId);
-
-        if (manager.status === ManagerStatusEnum.ACTIVE) {
-            throw new ApiError(
-                "Manager already activated",
-                StatusCodesEnum.BAD_REQUEST,
-            );
-        }
-
-        await userRepository.updateUser(managerId, {
-            status: ManagerStatusEnum.ACTIVE,
-        });
+    public async unbanManager(
+        managerId: string,
+    ): Promise<IManagerStatusResult> {
+        return await this.changeManagerStatus(
+            managerId,
+            ManagerStatusEnum.ACTIVE,
+        );
     }
 
     public async activateRequest(managerId: string): Promise<string> {
@@ -158,7 +145,7 @@ class AdminService {
         return await orderRepository.getOrdersStatistics();
     }
 
-    private async getManager(managerId: string): Promise<IUser> {
+    private async getManager(managerId: string): Promise<IManager> {
         const manager = await userService.getUserOrThrow(managerId);
 
         if (manager.role !== UserRoleEnum.MANAGER) {
@@ -175,7 +162,38 @@ class AdminService {
             );
         }
 
-        return manager;
+        return {
+            ...manager,
+            role: UserRoleEnum.MANAGER,
+            status: manager.status,
+        };
+    }
+
+    private async changeManagerStatus(
+        managerId: string,
+        status: ManagerStatusEnum,
+    ): Promise<IManagerStatusResult> {
+        const manager = await this.getManager(managerId);
+
+        if (manager.status === status) {
+            throw new ApiError(
+                `Manager already has status ${status}`,
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
+        const updatedManager = await userRepository.updateUser(managerId, {
+            status,
+        });
+
+        if (!updatedManager) {
+            throw new ApiError("Manager not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return {
+            _id: updatedManager._id,
+            status,
+        };
     }
 }
 
