@@ -119,15 +119,15 @@ class AdminService {
     public async unbanManager(
         managerId: string,
     ): Promise<IManagerStatusResult> {
+        const hasPassword = await userRepository.hasPassword(managerId);
+
         return await this.changeManagerStatus(
             managerId,
-            ManagerStatusEnum.ACTIVE,
+            hasPassword ? ManagerStatusEnum.ACTIVE : ManagerStatusEnum.NEW,
         );
     }
 
     public async activateRequest(managerId: string): Promise<string> {
-        const manager = await this.getManager(managerId);
-
         const actionToken = tokenService.generateActionToken({
             userId: managerId,
             role: UserRoleEnum.MANAGER,
@@ -135,7 +135,7 @@ class AdminService {
 
         await actionTokenRepository.create({
             actionToken,
-            _userId: manager._id,
+            _userId: managerId,
         });
 
         return actionToken;

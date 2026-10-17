@@ -50,7 +50,8 @@ class UserRepository {
     }
 
     public async create(user: IUserCreateDTO): Promise<IUser> {
-        return await User.create(user);
+        const createdUser = await User.create(user);
+        return createdUser.toObject();
     }
 
     public async getById(userId: string): Promise<IUser | null> {
@@ -68,6 +69,12 @@ class UserRepository {
         return await User.findByIdAndUpdate(userId, dto, {
             returnDocument: "after",
         });
+    }
+
+    public async hasPassword(managerId: string): Promise<boolean> {
+        const user = await User.findById(managerId).select("password").lean();
+
+        return Boolean(user?.password);
     }
 }
 

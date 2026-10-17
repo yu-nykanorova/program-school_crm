@@ -9,8 +9,8 @@ import { RegexEnum } from "../enums/regex.enum";
 import { queryValidator } from "./query.validator";
 
 export class OrderValidator {
-    private static name = joi.string().trim().min(2).max(50);
-    private static surname = joi.string().trim().min(2).max(50);
+    private static name = joi.string().trim();
+    private static surname = joi.string().trim();
     private static email = joi.string().email().trim();
     private static phone = joi.string().max(13).trim();
     private static age = joi.number().min(2).max(100);
