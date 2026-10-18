@@ -427,7 +427,7 @@ class OrderRepository {
         }
 
         if (query.groupId) {
-            filterObject.groupId = query.groupId;
+            filterObject.groupId = new Types.ObjectId(query.groupId);
         }
 
         if (query.dateFrom) {
@@ -445,7 +445,7 @@ class OrderRepository {
         }
 
         if (managerId) {
-            filterObject.managerId = managerId;
+            filterObject.managerId = new Types.ObjectId(managerId);
         }
 
         return filterObject;

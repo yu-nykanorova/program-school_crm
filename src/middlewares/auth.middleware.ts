@@ -104,7 +104,7 @@ class AuthMiddleware {
 
                 if (!tokenEntity) {
                     throw new ApiError(
-                        "Invalid token",
+                        "Invalid token provided",
                         StatusCodesEnum.UNAUTHORIZED,
                     );
                 }

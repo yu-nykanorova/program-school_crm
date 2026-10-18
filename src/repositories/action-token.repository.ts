@@ -7,7 +7,7 @@ class ActionTokenRepository {
     }
 
     public getByToken(token: string): Promise<IActionToken | null> {
-        return ActionToken.findOne({ token });
+        return ActionToken.findOne({ actionToken: token });
     }
 
     public async deleteActionToken(

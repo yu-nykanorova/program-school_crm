@@ -25,7 +25,7 @@ export class UserValidator {
     public static setNewPassword = joi.object({
         token: this.token.required(),
         password: this.password.required(),
-        confirmPassword: this.password.required(),
+        confirmPassword: this.password.valid(joi.ref("password")).required(),
     });
 
     public static query = queryValidator(UserQuerySortEnum, {

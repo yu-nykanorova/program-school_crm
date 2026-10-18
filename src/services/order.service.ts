@@ -48,12 +48,23 @@ class OrderService {
 
         this.checkAccessToEdit(order, payload.userId);
 
-        const updatedDto = {
-            ...dto,
-            ...(dto.orderStatus === OrderStatusEnum.NEW
-                ? { managerId: null }
-                : {}),
-        };
+        const updatedDto: IOrderEditDTO = { ...dto };
+
+        const isFreeOrder =
+            order.orderStatus === null ||
+            order.orderStatus === OrderStatusEnum.NEW;
+
+        if (dto.orderStatus === OrderStatusEnum.NEW) {
+            updatedDto.managerId = null;
+        } else {
+            if (!order.manager?._id) {
+                updatedDto.managerId = payload.userId;
+            }
+
+            if (isFreeOrder && dto.orderStatus === undefined) {
+                updatedDto.orderStatus = OrderStatusEnum.IN_WORK;
+            }
+        }
 
         const updatedOrder = await orderRepository.editOrderById(
             orderId,
@@ -101,6 +112,7 @@ class OrderService {
 
         return await this.getOrderOrThrow(orderId);
     }
+
     public async getOrdersExport(
         query: IOrderBaseQuery,
         payload: ITokenPayload,
@@ -123,7 +135,9 @@ class OrderService {
     }
 
     private checkAccessToEdit(order: IOrderResult, userId: string): void {
-        if (order.manager?._id && order.manager._id !== userId) {
+        const managerId = order.manager?._id?.toString();
+
+        if (managerId && managerId !== userId.toString()) {
             throw new ApiError(
                 "You cannot edit this order",
                 StatusCodesEnum.FORBIDDEN,

@@ -62,6 +62,10 @@ class AuthService {
             );
         }
 
+        const lastLogin = new Date();
+
+        await userRepository.updateUser(user._id, { lastLogin });
+
         const tokens = tokenService.generateTokens({
             userId: user._id,
             role: user.role,
@@ -130,9 +134,15 @@ class AuthService {
 
         const newPassword = await passwordService.hashPassword(dto.password);
 
-        await userRepository.updateUser(payload.userId, {
+        const updateUserData: Partial<IUser> = {
             password: newPassword,
-        });
+        };
+
+        if (user.role === UserRoleEnum.MANAGER) {
+            updateUserData.status = ManagerStatusEnum.ACTIVE;
+        }
+
+        await userRepository.updateUser(payload.userId, updateUserData);
 
         if (oldPassword) {
             await oldHashesRepository.create({
