@@ -22,11 +22,16 @@ router.post(
     authController.refresh,
 );
 
-router.post("/logout", authMiddleware.checkRefreshToken, authController.logout);
+router.post(
+    "/logout",
+    commonMiddleware.isBodyValid(UserValidator.logout),
+    authMiddleware.checkRefreshToken,
+    authController.logout,
+);
 
 router.post(
     "/activate",
-    commonMiddleware.isBodyValid(UserValidator.setNewPassword),
+    commonMiddleware.isBodyValid(UserValidator.activate),
     authMiddleware.checkActionToken(TokenTypeEnum.ACTION),
     authController.activate,
 );

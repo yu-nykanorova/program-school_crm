@@ -9,7 +9,7 @@ export class UserValidator {
     private static password = joi.string().regex(RegexEnum.PASSWORD);
     private static name = joi.string().regex(RegexEnum.NAME).trim();
     private static surname = joi.string().regex(RegexEnum.NAME).trim();
-    private static token = joi.string();
+    private static token = joi.string().min(1);
 
     public static createManager = joi.object({
         email: this.email.required(),
@@ -22,7 +22,7 @@ export class UserValidator {
         password: joi.string().required(),
     });
 
-    public static setNewPassword = joi.object({
+    public static activate = joi.object({
         token: this.token.required(),
         password: this.password.required(),
         confirmPassword: this.password.valid(joi.ref("password")).required(),
@@ -31,5 +31,9 @@ export class UserValidator {
     public static query = queryValidator(UserQuerySortEnum, {
         pageSize: 10,
         defaultOrder: `-${UserQuerySortEnum.CREATED_AT}`,
+    });
+
+    public static logout = joi.object({
+        refreshToken: this.token.required(),
     });
 }
