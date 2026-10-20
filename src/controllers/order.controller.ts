@@ -77,6 +77,10 @@ class OrderController {
                 validatedQuery: IOrderBaseQuery;
             };
             const payload = res.locals.tokenPayload as ITokenPayload;
+
+            console.log("EXPORT QUERY:", req.query);
+            console.log("VALIDATED QUERY:", (req as any).validatedQuery);
+
             const file = await orderService.getOrdersExport(
                 validatedQuery,
                 payload,
@@ -94,6 +98,7 @@ class OrderController {
 
             res.send(file);
         } catch (e) {
+            console.error("EXPORT ORDERS ERROR:", e);
             next(e);
         }
     }

@@ -149,11 +149,7 @@ class OrderService {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Orders");
 
-        worksheet.columns = [];
-
-        ordersTableColumnsConstants.forEach((item) => {
-            worksheet.columns.push(item);
-        });
+        worksheet.columns = ordersTableColumnsConstants;
 
         data.forEach((item) => {
             worksheet.addRow({

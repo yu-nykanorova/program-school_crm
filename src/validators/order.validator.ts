@@ -12,6 +12,7 @@ export class OrderValidator {
     private static name = joi.string().trim();
     private static surname = joi.string().trim();
     private static email = joi.string().email().trim();
+    private static emailFilter = joi.string().trim().max(100);
     private static phone = joi.string().max(13).trim();
     private static age = joi.number().min(2).max(100);
     private static sum = joi.number().min(0).max(1000000);
@@ -56,7 +57,7 @@ export class OrderValidator {
         additionalFields: {
             name: this.name,
             surname: this.surname,
-            email: this.email,
+            email: this.emailFilter,
             phone: this.phone,
             age: this.age,
             course: this.course,
@@ -71,10 +72,10 @@ export class OrderValidator {
     });
 
     public static queryForExport = joi.object({
-        name: joi.string().regex(RegexEnum.NAME),
-        surname: joi.string().regex(RegexEnum.NAME),
-        email: this.email,
-        phone: joi.string().regex(RegexEnum.PHONE),
+        name: this.name,
+        surname: this.surname,
+        email: this.emailFilter,
+        phone: this.phone,
         age: this.age,
         orderStatus: this.orderStatus,
         course: this.course,

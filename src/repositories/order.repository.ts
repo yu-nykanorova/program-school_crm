@@ -166,7 +166,7 @@ class OrderRepository {
     ): Promise<IManagerStatisticsDB[]> {
         const objectManagerIds = managerIds.map((id) => new Types.ObjectId(id));
 
-        const [result] = await Order.aggregate([
+        const result = await Order.aggregate([
             {
                 $match: {
                     managerId: {
@@ -242,7 +242,7 @@ class OrderRepository {
             },
         ]);
 
-        return result ?? [];
+        return result;
     }
 
     public async getOrderById(orderId: string): Promise<IOrderResult | null> {

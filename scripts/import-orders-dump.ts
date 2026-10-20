@@ -51,7 +51,7 @@ const transformOrdersDump = async () => {
         surname: normalizeString(order.surname),
         email: normalizeString(order.email),
         phone: normalizeString(order.phone),
-        age: order.age ?? null,
+        age: order.age === 0 ? null : (order.age ?? null),
         course: normalizeString(order.course),
         courseFormat: normalizeString(order.course_format),
         courseType: normalizeString(order.course_type),
