@@ -78,9 +78,6 @@ class OrderController {
             };
             const payload = res.locals.tokenPayload as ITokenPayload;
 
-            console.log("EXPORT QUERY:", req.query);
-            console.log("VALIDATED QUERY:", (req as any).validatedQuery);
-
             const file = await orderService.getOrdersExport(
                 validatedQuery,
                 payload,

@@ -122,7 +122,7 @@ class OrderRepository {
                         $sum: {
                             $cond: [
                                 {
-                                    $eq: ["$orderStatus", null],
+                                    $eq: [{ $type: "$orderStatus" }, "null"],
                                 },
                                 1,
                                 0,

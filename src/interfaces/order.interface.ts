@@ -76,7 +76,7 @@ export interface IOrdersStatistics {
     agree: number | null;
     disagree: number | null;
     new: number | null;
-    null: number | null;
+    noStatus: number | null;
     dubbing: number | null;
 }
 
