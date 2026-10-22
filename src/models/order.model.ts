@@ -8,6 +8,7 @@ import { IOrder } from "../interfaces/order.interface";
 
 const orderSchema = new Schema(
     {
+        publicId: { type: Number, required: true },
         name: { type: String, default: null },
         surname: { type: String, default: null },
         email: { type: String, default: null },
@@ -59,5 +60,7 @@ const orderSchema = new Schema(
         versionKey: false,
     },
 );
+
+//orderSchema.index({ publicId: 1 }, { unique: true });
 
 export const Order = model<IOrder>("Order", orderSchema, "orders");

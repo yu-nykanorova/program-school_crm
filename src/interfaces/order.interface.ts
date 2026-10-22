@@ -9,6 +9,7 @@ import { IOrderManagerResult } from "./manager.interface";
 
 export interface IOrder {
     _id: string;
+    publicId: number;
     name: string | null;
     surname: string | null;
     email: string | null;
@@ -50,6 +51,7 @@ export type IOrderEditDTO = Partial<
 
 export interface IOrderResult {
     _id: string;
+    publicId: number;
     name: string | null;
     surname: string | null;
     email: string | null;

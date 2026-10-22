@@ -2,10 +2,11 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import mongoose from "mongoose";
+import mongoose, { ClientSession } from "mongoose";
 
 import { DumpsImportHistory } from "../src/models/dumps-import-history.model";
 import { Order } from "../src/models/order.model";
+import { OrdersCounter } from "../src/models/orders-counter.model";
 import { connectToDB, disconnectFromDB } from "./seed/connectDB";
 
 interface IDumpOrder {
@@ -68,6 +69,32 @@ const transformOrdersDump = async () => {
     }));
 };
 
+const reservePublicIds = async (
+    count: number,
+    session: ClientSession,
+): Promise<number> => {
+    if (count === 0) {
+        return 0;
+    }
+
+    const counter = await OrdersCounter.findByIdAndUpdate(
+        "orders",
+        { $inc: { lastPublicId: count } },
+        {
+            returnDocument: "after",
+            upsert: true,
+            setDefaultsOnInsert: true,
+            session,
+        },
+    );
+
+    if (!counter) {
+        throw new Error("Failed to reserve order publicIds");
+    }
+
+    return counter.lastPublicId - count + 1;
+};
+
 const importOrdersDump = async (): Promise<void> => {
     const fileName = path.basename(dumpPath);
     const fileHash = await getFileHash(dumpPath);
@@ -85,7 +112,17 @@ const importOrdersDump = async (): Promise<void> => {
     try {
         session.startTransaction();
 
-        await Order.insertMany(transformedOrders, {
+        const firstPublicId = await reservePublicIds(
+            transformedOrders.length,
+            session,
+        );
+
+        const ordersWithPublicIds = transformedOrders.map((order, index) => ({
+            ...order,
+            publicId: firstPublicId + index,
+        }));
+
+        await Order.insertMany(ordersWithPublicIds, {
             session,
             timestamps: false,
         });
@@ -102,14 +139,16 @@ const importOrdersDump = async (): Promise<void> => {
         );
 
         await session.commitTransaction();
+
+        console.log(
+            `Successfully imported ${ordersWithPublicIds.length} orders.`,
+        );
     } catch (e) {
         await session.abortTransaction();
         throw e;
     } finally {
         await session.endSession();
     }
-
-    console.log(`Successfully imported ${transformedOrders.length} orders.`);
 };
 
 const run = async (): Promise<void> => {
