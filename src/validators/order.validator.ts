@@ -53,7 +53,7 @@ export class OrderValidator {
 
     public static query = queryValidator(OrderQuerySortEnum, {
         pageSize: 25,
-        defaultOrder: `-${OrderQuerySortEnum.ID}`,
+        defaultOrder: `-${OrderQuerySortEnum.PUBLIC_ID}`,
         additionalFields: {
             name: this.name,
             surname: this.surname,
@@ -91,6 +91,6 @@ export class OrderValidator {
                 ...Object.values(OrderQuerySortEnum),
                 ...Object.values(OrderQuerySortEnum).map((item) => `-${item}`),
             )
-            .default(`-${OrderQuerySortEnum.ID}`),
+            .default(`-${OrderQuerySortEnum.PUBLIC_ID}`),
     });
 }

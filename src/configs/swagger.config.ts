@@ -42,6 +42,9 @@ const swaggerDocument: OpenAPIV3.Document = {
                     _id: {
                         type: "string",
                     },
+                    publicId: {
+                        type: "number",
+                    },
                     name: {
                         type: "string",
                         nullable: true,
@@ -474,7 +477,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                 schema: {
                     type: "string",
                     enum: [
-                        "_id",
+                        "publicId",
                         "name",
                         "surname",
                         "email",

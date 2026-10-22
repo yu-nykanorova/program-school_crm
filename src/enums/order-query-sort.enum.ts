@@ -1,5 +1,5 @@
 export enum OrderQuerySortEnum {
-    ID = "_id",
+    PUBLIC_ID = "publicId",
     NAME = "name",
     SURNAME = "surname",
     EMAIL = "email",
