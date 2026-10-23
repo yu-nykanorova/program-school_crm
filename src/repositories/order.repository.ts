@@ -406,7 +406,7 @@ class OrderRepository {
             };
         }
 
-        if (query.age) {
+        if (query.age !== undefined && query.age !== null) {
             filterObject.age = query.age;
         }
 
