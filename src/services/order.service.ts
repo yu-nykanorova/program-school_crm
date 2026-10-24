@@ -153,12 +153,12 @@ class OrderService {
 
         data.forEach((item) => {
             worksheet.addRow({
-                id: item._id,
+                id: item.publicId,
                 name: item.name,
                 surname: item.surname,
                 email: item.email,
                 phone: item.phone,
-                age: item.age,
+                age: item.age ?? 0,
                 course: item.course,
                 courseFormat: item.courseFormat,
                 courseType: item.courseType,
@@ -169,6 +169,37 @@ class OrderService {
                 createdAt: item.createdAt,
                 manager: item.manager?.name,
             });
+        });
+
+        const headerRow = worksheet.getRow(1);
+
+        headerRow.height = 28;
+
+        headerRow.eachCell((cell) => {
+            cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "FF76b852" },
+            };
+
+            cell.font = {
+                bold: true,
+                color: { argb: "FFFFFFFF" },
+                size: 12,
+            };
+
+            cell.alignment = {
+                vertical: "middle",
+                horizontal: "center",
+                wrapText: true,
+            };
+
+            cell.border = {
+                bottom: {
+                    style: "thin",
+                    color: { argb: "FF388e3c" },
+                },
+            };
         });
 
         return await workbook.xlsx.writeBuffer();

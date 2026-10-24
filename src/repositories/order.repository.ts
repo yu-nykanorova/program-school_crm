@@ -407,7 +407,7 @@ class OrderRepository {
         }
 
         if (query.age !== undefined && query.age !== null) {
-            filterObject.age = query.age;
+            filterObject.age = query.age === 0 ? null : query.age;
         }
 
         if (query.course) {
