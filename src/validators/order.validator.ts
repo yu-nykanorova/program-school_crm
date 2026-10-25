@@ -36,19 +36,19 @@ export class OrderValidator {
     private static myOrders = joi.boolean();
 
     public static edit = joi.object({
-        name: joi.string().regex(RegexEnum.NAME),
-        surname: joi.string().regex(RegexEnum.NAME),
-        email: this.email,
-        phone: joi.string().regex(RegexEnum.PHONE),
-        age: this.age,
-        sum: this.sum,
-        alreadyPaid: this.alreadyPaid,
-        orderStatus: this.orderStatus,
-        course: this.course,
-        courseFormat: this.courseFormat,
-        courseType: this.courseType,
-        groupId: this.groupId,
-        managerId: this.managerId,
+        name: joi.string().regex(RegexEnum.NAME).allow(null),
+        surname: joi.string().regex(RegexEnum.NAME).allow(null),
+        email: this.email.allow(null),
+        phone: joi.string().regex(RegexEnum.PHONE).allow(null),
+        age: this.age.allow(null),
+        sum: this.sum.allow(null),
+        alreadyPaid: this.alreadyPaid.allow(null),
+        orderStatus: this.orderStatus.allow(null),
+        course: this.course.allow(null),
+        courseFormat: this.courseFormat.allow(null),
+        courseType: this.courseType.allow(null),
+        groupId: this.groupId.allow(null),
+        managerId: this.managerId.allow(null),
     });
 
     public static query = queryValidator(OrderQuerySortEnum, {

@@ -61,7 +61,7 @@ class OrderController {
                 payload,
                 dto,
             );
-            res.status(StatusCodesEnum.CREATED).json(order.comments);
+            res.status(StatusCodesEnum.CREATED).json(order);
         } catch (e) {
             next(e);
         }
