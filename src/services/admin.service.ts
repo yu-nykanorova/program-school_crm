@@ -37,8 +37,9 @@ class AdminService {
             await orderRepository.getManagersStatistics(managerIds);
 
         const statisticsMap = new Map<string, IManagerStatisticsDB>();
+
         statistics.forEach((statistic) => {
-            statisticsMap.set(statistic._id, statistic);
+            statisticsMap.set(String(statistic._id), statistic);
         });
 
         const data: IManagerWithStatistics[] = managers.map((manager) => {
@@ -48,7 +49,7 @@ class AdminService {
                     StatusCodesEnum.INTERNAL_SERVER_ERROR,
                 );
             }
-            const managerStatistics = statisticsMap.get(manager._id);
+            const managerStatistics = statisticsMap.get(String(manager._id));
             return {
                 _id: manager._id,
                 email: manager.email,

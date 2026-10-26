@@ -1,6 +1,5 @@
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
-import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
 
 import { config } from "./configs/config";
@@ -18,7 +17,6 @@ app.use(
         origin: process.env.FRONT_URL,
     }),
 );
-app.use(fileUpload());
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use("/", apiRouter);
