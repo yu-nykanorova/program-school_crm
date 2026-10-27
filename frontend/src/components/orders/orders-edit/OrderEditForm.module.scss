@@ -1,0 +1,44 @@
+@use "../../../styles/mixins" as *;
+
+.editOrderForm {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.editOrderFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.addSelectGroupButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+
+  button {
+    flex: 1;
+    padding: 4px;
+  }
+}
+
+.addGroupButton {
+  width: 100%;
+  padding: 4px;
+}
+
+.editOrderButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+
+  @include tablet {
+    justify-content: space-evenly;
+  }
+}

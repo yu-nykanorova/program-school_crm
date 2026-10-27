@@ -1,0 +1,15 @@
+export const filterParamKeys = [
+    "name",
+    "surname",
+    "email",
+    "phone",
+    "age",
+    "course",
+    "courseFormat",
+    "courseType",
+    "orderStatus",
+    "groupId",
+    "dateFrom",
+    "dateTo",
+    "myOrders",
+] as const;

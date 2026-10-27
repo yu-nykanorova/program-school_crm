@@ -1,0 +1,19 @@
+:root {
+    --text-dark: #000;
+    --text-light: #fff;
+    --bg-main: #76b852;
+    --bg-input: #eee;
+    --bg-button: #43a047;
+    --bg-accent: #388e3c;
+    --bg-table-row-light: #f6f6f6;
+    --bg-table-row-dark: #e9e9e9;
+    --error-text: #e00000;
+
+    --shadow: 0 0 20px 0 rgba(0, 0, 0, .2), 0 5px 5px 0 rgba(0, 0, 0, .24);
+    --shadow-bottom: 0 4px 6px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    --font-main: system-ui, 'Segoe UI', Roboto, sans-serif;
+    --font-input: system-ui, Arial, sans-serif;
+
+    --transition: all .3s ease;
+}

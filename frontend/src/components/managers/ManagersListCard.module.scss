@@ -1,0 +1,66 @@
+@use "../../styles/mixins" as *;
+
+.managerListCard {
+  padding: 20px;
+  width: 100%;
+  border: 2px solid var(--bg-main);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+
+  @include desktop-small {
+    gap: 10px;
+  }
+
+  @include tablet {
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.managerInfo {
+  flex: 1;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+
+  @include tablet {
+    justify-content: space-between;
+  }
+}
+
+.managerButtonsOuter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.managerButtonsInner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @include desktop-small {
+    align-self: center;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @include tablet {
+    flex-direction: row;
+  }
+}
+
+.linkCopied {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 90px);
+
+  @include desktop-small {
+    top: -25px;
+  }
+}

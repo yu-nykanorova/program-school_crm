@@ -1,0 +1,55 @@
+@use "../../../../styles/mixins" as *;
+
+.dataRow {
+  transition: background .15s ease;
+
+  &:not(.openRow):hover {
+    background: var(--bg-button);
+    color: var(--text-light);
+  }
+
+  @include tablet {
+    font-size: 14px;
+  }
+}
+
+.dataRow, .hiddenOrderInfo {
+  background: var(--bg-table-row-dark);
+}
+
+.hiddenOrderInfo {
+  padding: 10px 20px;
+  min-width: max-content;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  @include tablet {
+    font-size: 14px;
+  }
+}
+
+.oddRow {
+  background: var(--bg-table-row-light);
+}
+
+.messageBlock {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editOrderBlock {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.comments {
+  margin: 0 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

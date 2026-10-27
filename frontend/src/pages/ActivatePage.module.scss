@@ -1,0 +1,18 @@
+.activatePage {
+  padding: 50px;
+  background-color: var(--bg-main);
+  align-items: center;
+  justify-content: center;
+}
+
+.activateForm {
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+}
+
+.activateButton {
+  border-radius: 10px;
+  padding: 15px;
+  width: 100%;
+}

@@ -1,0 +1,21 @@
+.commentsListItem {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 5px;
+  border-bottom: 1px solid #ccc;
+  word-wrap: break-word;
+}
+
+.commentsListItem:last-child {
+  border-bottom: none;
+}
+
+.commentText {
+  word-break: break-all;
+}
+
+.commentInfo {
+  display: flex;
+  gap: 10px;
+}

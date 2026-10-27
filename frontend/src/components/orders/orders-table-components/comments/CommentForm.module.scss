@@ -1,0 +1,18 @@
+@use "../../../../styles/mixins" as *;
+
+.commentForm {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  //align-items: center;
+  gap: 10px;
+  background: var(--text-light);
+  border-radius: 10px;
+
+  input {
+    flex: 1;
+    @include tablet {
+      padding: 8px;
+    }
+  }
+}

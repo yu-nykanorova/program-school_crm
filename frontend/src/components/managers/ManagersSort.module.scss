@@ -1,0 +1,13 @@
+@use "../../styles/mixins" as *;
+
+.sortManagersSelect {
+  align-self: flex-end;
+  background: var(--bg-input);
+  border: 2px solid var(--bg-input);
+  border-radius: 5px;
+  padding: 10px;
+
+  @include tablet {
+    padding: 8px;
+  }
+}

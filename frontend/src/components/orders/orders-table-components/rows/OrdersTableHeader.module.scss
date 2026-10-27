@@ -1,0 +1,10 @@
+.tableHeaderRow {
+  width: 100%;
+  background: var(--bg-main);
+  color: #fff;
+  font-weight: 700;
+}
+
+.selectedColumn {
+  background: var(--bg-accent);
+}

@@ -1,0 +1,14 @@
+@use "../../../styles/mixins" as *;
+
+.formField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  input, select {
+    @include tablet {
+      padding: 8px;
+    }
+  }
+}

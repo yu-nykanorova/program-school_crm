@@ -1,0 +1,24 @@
+@use "../../styles/mixins" as *;
+
+.button {
+  padding: 10px;
+  background: var(--bg-button);
+  border-radius: 5px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  transition: var(--transition);
+
+  &:not(:disabled):hover {
+    background: var(--bg-accent);
+  }
+
+  &:disabled {
+    background: silver;
+    cursor: not-allowed;
+  }
+
+  @include tablet {
+    padding: 8px;
+  }
+
+}

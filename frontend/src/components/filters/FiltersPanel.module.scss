@@ -1,0 +1,83 @@
+@use "../../styles/mixins" as *;
+
+.filtersPanel {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filtersContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  position: relative;
+
+  @include tablet {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  input, select {
+    @include tablet {
+      padding: 8px;
+    }
+  }
+}
+
+.filtersPanelItem {
+  width: 100%;
+}
+
+.filtersPanelItem[type="date"]:not(:focus):not(:valid) {
+  color: transparent;
+}
+
+.myCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @include tablet {
+    gap: 5px;
+  }
+}
+
+.myCheckboxBox {
+  width: 20px;
+  height: 20px;
+
+  &:checked {
+    accent-color: var(--bg-button);
+  }
+}
+
+.filterButtonsBox {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  @include tablet {
+    flex-direction: column;
+  }
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.filterGroupsError {
+  position: absolute;
+  bottom: -25%;
+  right: 0;
+}
+
+.fileExportError {
+  position: absolute;
+  bottom: -25%;
+  right: 0;
+}

@@ -26,14 +26,14 @@ export function checkEnv(value: string | undefined, name: string): string {
 export const config: IConfig = {
     PORT: checkEnv(process.env.PORT, "PORT"),
     MONGO_URI: checkEnv(process.env.MONGO_URI, "MONGO_URI"),
-    FRONT_URL: checkEnv(process.env.FRONT_URL, "MONGO_URI"),
+    FRONT_URL: checkEnv(process.env.FRONT_URL, "FRONT_URL"),
     JWT_ACCESS_SECRET: checkEnv(
         process.env.JWT_ACCESS_SECRET,
         "JWT_ACCESS_SECRET",
     ),
     JWT_REFRESH_SECRET: checkEnv(
         process.env.JWT_REFRESH_SECRET,
-        "REFRESH_SECRET",
+        "JWT_REFRESH_SECRET",
     ),
     JWT_ACCESS_LIFETIME: checkEnv(
         process.env.JWT_ACCESS_LIFETIME,

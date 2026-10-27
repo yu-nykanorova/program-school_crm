@@ -1,0 +1,46 @@
+.paginationBlock {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.paginationItem {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-main);
+  border-radius: 50%;
+  color: var(--text-light);
+  line-height: 1;
+  cursor: pointer;
+
+  &.dots {
+    cursor: default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.selectedItem {
+    background-color: var(--bg-accent);
+  }
+
+  &.paginationItemButton {
+    width: 32px;
+    border-radius: 16px;
+    font-size: 20px;
+  }
+
+  &:not(.dots):hover {
+    background-color: var(--bg-accent);
+    transition: background-color 0.15s ease-in-out;
+  }
+}
+
+.hiddenButton {
+  display: none;
+}
