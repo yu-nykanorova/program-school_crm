@@ -123,7 +123,11 @@ const loadOrdersStatistics = createAsyncThunk(
 export const adminSlice = createSlice({
     name: 'adminSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        clearActionError: (state) => {
+            state.actionError = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             // GET /managers

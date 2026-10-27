@@ -47,6 +47,10 @@ export const AdminPage = () => {
             : "-createdAt";
 
     useEffect(() => {
+        dispatch(adminSliceActions.clearActionError());
+    }, [dispatch]);
+
+    useEffect(() => {
         dispatch(
             adminSliceActions.loadOrdersStatistics(),
         );

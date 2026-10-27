@@ -13,6 +13,10 @@ const swaggerDocument: OpenAPIV3.Document = {
             url: "http://localhost:3000",
             description: "Local server",
         },
+        {
+            url: "https://program-school-crm-api.onrender.com",
+            description: "Production server",
+        },
     ],
     components: {
         securitySchemes: {
