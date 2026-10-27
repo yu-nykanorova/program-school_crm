@@ -24,7 +24,7 @@ export function checkEnv(value: string | undefined, name: string): string {
 }
 
 export const config: IConfig = {
-    PORT: checkEnv(process.env.PORT, "PORT"),
+    PORT: checkEnv(process.env.PORT, "PORT") || "3000",
     MONGO_URI: checkEnv(process.env.MONGO_URI, "MONGO_URI"),
     FRONT_URL: checkEnv(process.env.FRONT_URL, "FRONT_URL"),
     JWT_ACCESS_SECRET: checkEnv(
