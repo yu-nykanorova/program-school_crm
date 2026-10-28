@@ -543,7 +543,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/orders?page=13",
+              "raw": "{{baseUrl}}/orders",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -603,7 +603,8 @@
                 },
                 {
                   "key": "page",
-                  "value": "13"
+                  "value": "13",
+                  "disabled": true
                 }
               ]
             }

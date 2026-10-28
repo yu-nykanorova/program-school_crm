@@ -11,7 +11,7 @@ The project is built with React, TypeScript, Node.js, and Express.js. It uses Mo
 
 - **Frontend:** https://program-school-crm.vercel.app/
 - **Backend API:** https://program-school-crm-api.onrender.com
-- **API Documentation (Swagger):** https://program-school-crm-api.onrender.com/docs/
+- **API Documentation (Swagger):** https://program-school-crm-api.onrender.com/docs/ (choose production server in the Servers list)
 
 ## Features
 ### 1. Authentication and Authorization
@@ -54,6 +54,7 @@ Assign applications to groups.
 - React Hook Form
 - Zod
 - SCSS
+ 
 **Backend**
 - Node.js
 - Express.js 5
@@ -66,7 +67,8 @@ Assign applications to groups.
 - Cron
 - ExcelJS
 - Swagger UI Express
-**Deployment and Tools
+
+**Deployment and Tools**
 - Docker, Docker Compose
 - Nginx
 - MongoDB Atlas
