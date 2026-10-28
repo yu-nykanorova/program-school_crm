@@ -7,11 +7,11 @@ The application provides authentication, role-based access, orders management, f
 The project is built with React, TypeScript, Node.js, and Express.js. It uses MongoDB Atlas as a cloud database and Docker Compose for local containerized deployment. The frontend and backend are also deployed separately, allowing the application to be accessed online without installing any dependencies.
 
 ## Live Demo
+***Please Note***: The backend is hosted on Render's free service and the first request may take longer than usual. Please allow some time for the backend to start before retrying.
+
 - **Frontend:** https://program-school-crm.vercel.app/
 - **Backend API:** https://program-school-crm-api.onrender.com
 - **API Documentation (Swagger):** https://program-school-crm-api.onrender.com/docs/
-
-***Please Note***: The backend is hosted on Render's free service and the first request may take longer than usual. Please allow some time for the backend to start before retrying.
 
 ## Features
 ### 1. Authentication and Authorization
@@ -73,6 +73,11 @@ Assign applications to groups.
 - Vercel
 - Render
 - Postman
+
+## Database & Seed Data
+
+- Orders were imported into database from the provided data dump, which was subsequently extended and modified during development.
+- Manager accounts and groups were generated and added to the database using a seed script.
 
 ## Getting Started
 
