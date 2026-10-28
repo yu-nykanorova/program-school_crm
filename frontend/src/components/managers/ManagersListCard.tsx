@@ -21,6 +21,8 @@ export const ManagersListCard: FC<ManagerProps> = ({ manager }) => {
 
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    const isManagerActive = manager.status === managerStatuses.ACTIVE;
+
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -82,7 +84,9 @@ export const ManagersListCard: FC<ManagerProps> = ({ manager }) => {
                     <p>email: {manager.email}</p>
                     <p>name: {manager.name}</p>
                     <p>surname: {manager.surname}</p>
-                    <p>is active: {manager.status}</p>
+                    <p>
+                        is active: {isManagerActive.toString()}
+                    </p>
                     <p>last login: {formatDate(manager.lastLogin)}</p>
                 </div>
 
