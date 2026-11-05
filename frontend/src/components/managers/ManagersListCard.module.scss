@@ -23,8 +23,7 @@
 .managerInfo {
   flex: 1;
   display: flex;
-  justify-content: space-evenly;
-  gap: 20px;
+  gap: 50px;
 
   @include tablet {
     justify-content: space-between;

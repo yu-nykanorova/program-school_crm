@@ -166,7 +166,7 @@ class OrderRepository {
     ): Promise<IManagerStatisticsDB[]> {
         const objectManagerIds = managerIds.map((id) => new Types.ObjectId(id));
 
-        const result = await Order.aggregate([
+        return await Order.aggregate([
             {
                 $match: {
                     managerId: {
@@ -241,8 +241,6 @@ class OrderRepository {
                 },
             },
         ]);
-
-        return result;
     }
 
     public async getOrderById(orderId: string): Promise<IOrderResult | null> {
@@ -423,7 +421,13 @@ class OrderRepository {
         }
 
         if (query.orderStatus) {
-            filterObject.orderStatus = query.orderStatus;
+            if (query.orderStatus === OrderStatusEnum.NEW) {
+                filterObject.orderStatus = {
+                    $in: [OrderStatusEnum.NEW, null],
+                };
+            } else {
+                filterObject.orderStatus = query.orderStatus;
+            }
         }
 
         if (query.groupId) {

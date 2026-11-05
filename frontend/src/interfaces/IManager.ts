@@ -2,7 +2,7 @@ import type {ManagerStatus} from "../constants/managerStatuses.ts";
 import type {IUser} from "./IUser.ts";
 
 export interface IManager extends IUser {
-    status: ManagerStatus;
+    status?: ManagerStatus;
 }
 
 export interface IManagerWithStatistics extends IManager {
@@ -11,7 +11,7 @@ export interface IManagerWithStatistics extends IManager {
 
 export interface IManagerStatusResult {
     _id: string;
-    status: ManagerStatus;
+    status?: ManagerStatus;
 }
 
 export interface IManagerCreate {

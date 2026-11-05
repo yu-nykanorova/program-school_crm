@@ -29,7 +29,7 @@ class UserRepository {
         const [result] = await User.aggregate([
             {
                 $match: {
-                    role: UserRoleEnum.MANAGER,
+                    role: { $in: [UserRoleEnum.MANAGER, UserRoleEnum.ADMIN] },
                 },
             },
             {
@@ -41,7 +41,10 @@ class UserRepository {
                     totalItems: [{ $count: "count" }],
                 },
             },
-        ]);
+        ]).collation({
+            locale: "uk",
+            strength: 2,
+        });
 
         return {
             data: result?.data ?? [],

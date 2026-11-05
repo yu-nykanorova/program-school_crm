@@ -54,7 +54,10 @@ class OrderService {
             order.orderStatus === null ||
             order.orderStatus === OrderStatusEnum.NEW;
 
-        if (dto.orderStatus === OrderStatusEnum.NEW) {
+        if (
+            dto.orderStatus === OrderStatusEnum.NEW ||
+            dto.orderStatus === null
+        ) {
             updatedDto.managerId = null;
         } else {
             if (!order.manager?._id) {

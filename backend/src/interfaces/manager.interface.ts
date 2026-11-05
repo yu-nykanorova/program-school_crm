@@ -3,8 +3,8 @@ import { UserRoleEnum } from "../enums/user-role.enum";
 import { IUser } from "./user.interface";
 
 export interface IManager extends Omit<IUser, "role"> {
-    role: UserRoleEnum.MANAGER;
-    status: ManagerStatusEnum;
+    role: UserRoleEnum.MANAGER | UserRoleEnum.ADMIN;
+    status?: ManagerStatusEnum;
 }
 
 export interface IManagerWithStatistics extends IManager {
@@ -23,8 +23,8 @@ export interface IManagerResult {
     name: string;
     surname: string;
     lastLogin: string | null;
-    role: UserRoleEnum.MANAGER;
-    status: ManagerStatusEnum;
+    role: UserRoleEnum.MANAGER | UserRoleEnum.ADMIN;
+    status?: ManagerStatusEnum;
     createdAt: string | null;
     updatedAt: string | null;
 }

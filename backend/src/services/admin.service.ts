@@ -43,21 +43,16 @@ class AdminService {
         });
 
         const data: IManagerWithStatistics[] = managers.map((manager) => {
-            if (!manager.status) {
-                throw new ApiError(
-                    `Manager ${manager._id} status is missing`,
-                    StatusCodesEnum.INTERNAL_SERVER_ERROR,
-                );
-            }
             const managerStatistics = statisticsMap.get(String(manager._id));
+
             return {
                 _id: manager._id,
                 email: manager.email,
                 name: manager.name,
                 surname: manager.surname,
                 lastLogin: manager.lastLogin,
-                role: UserRoleEnum.MANAGER,
-                status: manager.status,
+                role: manager.role,
+                status: manager?.status,
                 createdAt: manager.createdAt,
                 updatedAt: manager.updatedAt,
                 statistics: managerStatistics

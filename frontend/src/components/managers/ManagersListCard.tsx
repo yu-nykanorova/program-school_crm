@@ -8,6 +8,7 @@ import {useAppDispatch} from "../../store/hooks/useAppDispatch.tsx";
 import {adminSliceActions} from "../../store/slices/adminSlice.ts";
 import {formatDate} from "../../utils/formatDate.ts";
 import {ManagerStatistics} from "./ManagerStatistics.tsx";
+import { roles } from "../../constants/roles.ts";
 
 type ManagerProps = {
     manager: IManagerWithStatistics;
@@ -84,35 +85,39 @@ export const ManagersListCard: FC<ManagerProps> = ({ manager }) => {
                     <p>email: {manager.email}</p>
                     <p>name: {manager.name}</p>
                     <p>surname: {manager.surname}</p>
-                    <p>
-                        is active: {isManagerActive.toString()}
-                    </p>
+                    {manager.status && (
+                        <p>
+                            is active: {isManagerActive.toString()}
+                        </p>
+                    )}
                     <p>last login: {formatDate(manager.lastLogin)}</p>
                 </div>
 
                 <ManagerStatistics statistics={manager.statistics}/>
             </div>
 
-            <div className={styles.managerButtonsOuter}>
-                <div className={styles.managerButtonsInner }>
-                    {activationLink ? (
-                    <Button onClick={handleCopyLink}>
-                        Copy to clipboard
-                    </Button>
-                ) : (
-                    <Button onClick={handleActivate} className="no-wrap">
-                        {manager.status === managerStatuses.ACTIVE
-                            ? "Recovery password"
-                            : "Activate"}
-                    </Button>
-                )}
-                    <Button onClick={handleBan}>Ban</Button>
-                    <Button onClick={handleUnban}>Unban</Button>
+            {manager.role !== roles.ADMIN && (
+                <div className={styles.managerButtonsOuter}>
+                    <div className={styles.managerButtonsInner}>
+                        {activationLink ? (
+                            <Button onClick={handleCopyLink}>
+                                Copy to clipboard
+                            </Button>
+                        ) : (
+                            <Button onClick={handleActivate} className="no-wrap">
+                                {manager.status === managerStatuses.ACTIVE
+                                    ? "Recovery password"
+                                    : "Activate"}
+                            </Button>
+                        )}
+                        <Button onClick={handleBan}>Ban</Button>
+                        <Button onClick={handleUnban}>Unban</Button>
+                    </div>
+                    {isLinkCopied &&
+                        <p className={styles.linkCopied}>Link copied to clipboard!</p>
+                    }
                 </div>
-                {isLinkCopied &&
-                    <p className={styles.linkCopied}>Link copied to clipboard!</p>
-                }
-            </div>
+            )}
         </div>
     );
 };
