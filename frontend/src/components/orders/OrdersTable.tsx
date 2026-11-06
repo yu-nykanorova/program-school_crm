@@ -3,7 +3,7 @@ import styles from "./OrdersTable.module.scss";
 import {OrdersTableHeader} from "./orders-table-components/rows/OrdersTableHeader.tsx";
 import {OrdersTableRow} from "./orders-table-components/rows/OrdersTableRow.tsx";
 import type {IOrder} from "../../interfaces/IOrder.ts";
-import type {FC} from "react";
+import { type FC, useState } from "react";
 import type {OrderQuerySort, OrderQuerySortFull} from "../../constants/orderQuerySort.ts";
 
 type OrdersTableProps = {
@@ -13,6 +13,8 @@ type OrdersTableProps = {
 }
 
 export const OrdersTable: FC<OrdersTableProps> = ({ orders, currentSortOrder, onSortChange }) => {
+    const [openedRow, setOpenedRow] = useState<string | null>(null);
+
     const handleSort = (columnKey: OrderQuerySort) => {
         let nextOrder: OrderQuerySortFull;
 
@@ -25,6 +27,10 @@ export const OrdersTable: FC<OrdersTableProps> = ({ orders, currentSortOrder, on
         onSortChange(nextOrder);
     };
 
+    const handleOpenRow = (rowId: string | null) => {
+        setOpenedRow(rowId);
+    }
+
     return (
         <div className={styles.ordersTable}>
             <div className={styles.ordersTableContent}>
@@ -34,6 +40,8 @@ export const OrdersTable: FC<OrdersTableProps> = ({ orders, currentSortOrder, on
                         key={order.databaseId}
                         order={order}
                         isOddRow={index % 2 === 0}
+                        openedRow={openedRow}
+                        openRow={handleOpenRow}
                     />
                 ))}
             </div>

@@ -16,7 +16,17 @@ class GroupRepository {
     }
 
     public async getByName(groupName: string): Promise<IGroup | null> {
-        return await Group.findOne({ name: new RegExp(`^${groupName}$`, "i") });
+        const searchGroupName = groupName.replace(
+            /[.*+?^${}()|[\]\\]/g,
+            "\\$&",
+        );
+
+        return await Group.findOne({
+            name: {
+                $regex: `^${searchGroupName}$`,
+                $options: "i",
+            },
+        });
     }
 }
 

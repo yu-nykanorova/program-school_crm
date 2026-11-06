@@ -78,6 +78,8 @@ axiosInstance.interceptors.response.use(
             } catch (refreshError) {
                 removeFromLocalStorage("tokens");
 
+                window.location.replace("/login");
+
                 return Promise.reject(refreshError);
             }
         }

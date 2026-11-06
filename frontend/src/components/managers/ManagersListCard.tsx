@@ -24,6 +24,8 @@ export const ManagersListCard: FC<ManagerProps> = ({ manager }) => {
 
     const isManagerActive = manager.status === managerStatuses.ACTIVE;
 
+    const isManagerBanned = manager.status === managerStatuses.BANNED;
+
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -105,13 +107,23 @@ export const ManagersListCard: FC<ManagerProps> = ({ manager }) => {
                             </Button>
                         ) : (
                             <Button onClick={handleActivate} className="no-wrap">
-                                {manager.status === managerStatuses.ACTIVE
-                                    ? "Recovery password"
-                                    : "Activate"}
+                                {manager.status === managerStatuses.NEW
+                                    ? "Activate"
+                                    : "Recovery password"}
                             </Button>
                         )}
-                        <Button onClick={handleBan}>Ban</Button>
-                        <Button onClick={handleUnban}>Unban</Button>
+                        <Button
+                            onClick={handleBan}
+                            disabled={isManagerBanned}
+                        >
+                            Ban
+                        </Button>
+                        <Button
+                            onClick={handleUnban}
+                            disabled={!isManagerBanned}
+                        >
+                            Unban
+                        </Button>
                     </div>
                     {isLinkCopied &&
                         <p className={styles.linkCopied}>Link copied to clipboard!</p>

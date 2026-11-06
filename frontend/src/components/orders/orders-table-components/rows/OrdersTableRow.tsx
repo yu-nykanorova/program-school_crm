@@ -14,10 +14,11 @@ import {useAppSelector} from "../../../../store/hooks/useAppSelector.tsx";
 type TableRowProps = {
     order: IOrder;
     isOddRow: boolean;
+    openRow: (rowId: string | null) => void;
+    openedRow: string | null;
 }
 
-export const OrdersTableRow: FC<TableRowProps> = memo(({ order, isOddRow }) => {
-    const [isRowOpen, setIsRowOpen] = useState(false);
+export const OrdersTableRow: FC<TableRowProps> = memo(({ order, isOddRow, openedRow, openRow }) => {
     const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -35,6 +36,8 @@ export const OrdersTableRow: FC<TableRowProps> = memo(({ order, isOddRow }) => {
             new Date(a.createdAt).getTime(),
     );
 
+    let isRowOpen = openedRow === order.databaseId;
+
     const valueToDisplay = (value: unknown): string => {
         if (value === null || value === undefined) {
             return "null";
@@ -51,11 +54,15 @@ export const OrdersTableRow: FC<TableRowProps> = memo(({ order, isOddRow }) => {
         return String(value);
     };
 
+    const handleClick = () => {
+        openRow(isRowOpen ? null : order.databaseId);
+    }
+
     return (
         <>
             <div
                 className={`${mainTableStyles.tableRow} ${styles.dataRow} ${isOddRow ? styles.oddRow : ""} ${isRowOpen ? styles.openRow : ""}`}
-                onClick={() => setIsRowOpen((prev) => !prev)}
+                onClick={handleClick}
             >
                 <div className={mainTableStyles.tableCell} title={valueToDisplay(transformedId)}>{valueToDisplay(transformedId)}</div>
                 <div className={mainTableStyles.tableCell} title={valueToDisplay(order.name)}>{valueToDisplay(order.name)}</div>

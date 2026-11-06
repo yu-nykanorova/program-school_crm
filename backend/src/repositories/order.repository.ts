@@ -2,6 +2,7 @@ import { PipelineStage, Types } from "mongoose";
 
 import { OrderQuerySortEnum } from "../enums/order-query-sort.enum";
 import { OrderStatusEnum } from "../enums/order-status.enum";
+import { timeHelper } from "../helpers/time.helper";
 import { IAggregatedResponse } from "../interfaces/aggregated-response";
 import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import { IManagerStatisticsDB } from "../interfaces/manager.interface";
@@ -377,29 +378,49 @@ class OrderRepository {
         const filterObject: Record<string, any> = {};
 
         if (query.name) {
+            const searchName = query.name.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                "\\$&",
+            );
+
             filterObject.name = {
-                $regex: query.name,
+                $regex: searchName,
                 $options: "i",
             };
         }
 
         if (query.surname) {
+            const searchSurname = query.surname.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                "\\$&",
+            );
+
             filterObject.surname = {
-                $regex: query.surname,
+                $regex: searchSurname,
                 $options: "i",
             };
         }
 
         if (query.email) {
+            const searchEmail = query.email.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                "\\$&",
+            );
+
             filterObject.email = {
-                $regex: query.email,
+                $regex: searchEmail,
                 $options: "i",
             };
         }
 
         if (query.phone) {
+            const searchPhone = query.phone.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                "\\$&",
+            );
+
             filterObject.phone = {
-                $regex: query.phone,
+                $regex: searchPhone,
                 $options: "i",
             };
         }
@@ -437,14 +458,14 @@ class OrderRepository {
         if (query.dateFrom) {
             filterObject.createdAt = {
                 ...filterObject.createdAt,
-                $gte: query.dateFrom,
+                $gte: timeHelper.buildFilterDateFrom(query.dateFrom),
             };
         }
 
         if (query.dateTo) {
             filterObject.createdAt = {
                 ...filterObject.createdAt,
-                $lte: query.dateTo,
+                $lt: timeHelper.buildFilterDateTo(query.dateTo),
             };
         }
 

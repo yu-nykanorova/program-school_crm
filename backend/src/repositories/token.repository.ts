@@ -18,6 +18,10 @@ class TokenRepository extends BaseRepository<IToken> {
     public async deleteTokenPair(refreshToken: string): Promise<void> {
         await Token.deleteOne({ refreshToken });
     }
+
+    public async deleteUserTokens(userId: string): Promise<void> {
+        await Token.deleteMany({ _userId: userId });
+    }
 }
 
 export const tokenRepository = new TokenRepository();

@@ -1,4 +1,11 @@
 import dayjs, { ManipulateType } from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const TIMEZONE = "Europe/Kyiv";
 
 type ConfigString = {
     value: number;
@@ -16,6 +23,20 @@ class TimeHelper {
             value: parseInt(value),
             unit: unit as ManipulateType,
         };
+    }
+
+    public buildFilterDateFrom(from: string) {
+        const date = dayjs(from).utc().format("YYYY-MM-DD");
+
+        return dayjs.tz(date, TIMEZONE).toDate();
+    }
+
+    public buildFilterDateTo(to: string) {
+        const date = dayjs(to).utc().format("YYYY-MM-DD");
+
+        const nextDate = dayjs.utc(date).add(1, "day").format("YYYY-MM-DD");
+
+        return dayjs.tz(nextDate, TIMEZONE).toDate();
     }
 }
 

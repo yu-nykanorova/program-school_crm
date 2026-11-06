@@ -14,6 +14,7 @@ import { IPaginatedResponse } from "../interfaces/paginated-response";
 import { IUserQuery } from "../interfaces/user.interface";
 import { actionTokenRepository } from "../repositories/action-token.repository";
 import { orderRepository } from "../repositories/order.repository";
+import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { tokenService } from "./token.service";
 import { userService } from "./user.service";
@@ -106,10 +107,14 @@ class AdminService {
     }
 
     public async banManager(managerId: string): Promise<IManagerStatusResult> {
-        return await this.changeManagerStatus(
+        const result = await this.changeManagerStatus(
             managerId,
             ManagerStatusEnum.BANNED,
         );
+
+        await tokenRepository.deleteUserTokens(managerId);
+
+        return result;
     }
 
     public async unbanManager(
