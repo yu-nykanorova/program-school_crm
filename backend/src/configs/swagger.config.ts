@@ -1020,7 +1020,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                         description: "Access denied. Admin role required",
                     },
                     404: {
-                        description: "User not found",
+                        description: "User not found or user not a manager",
                     },
                     500: {
                         description: "Manager status is missing",

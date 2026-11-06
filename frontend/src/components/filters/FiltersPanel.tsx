@@ -1,5 +1,5 @@
 import {Button} from "../ui/Button.tsx";
-import {ArrowRotateIcon} from "../icons/ArrowRotateIcon.tsx";
+import {ArrowResetIcon} from "../icons/ArrowResetIcon.tsx";
 import {ExportIcon} from "../icons/ExportIcon.tsx";
 import styles from "./FiltersPanel.module.scss";
 import {Form} from "../ui/Form.tsx";
@@ -21,15 +21,17 @@ import {getOrdersFilters} from "../../utils/getOrdersFilter.ts";
 import {orderService} from "../../services/orderService.ts";
 import axios from "axios";
 import {useSearchParams} from "react-router-dom";
+import { ArrowRefreshIcon } from "../icons/ArrowRefreshIcon.tsx";
 
 type FiltersPanelProps = {
     groups: IGroup[];
     groupsLoading: boolean;
     groupsError: string | null;
     onResetFilters: () => void;
+    onRefreshOrders: () => void;
 };
 
-export const FiltersPanel: FC<FiltersPanelProps> = ({ groups, groupsLoading, groupsError, onResetFilters }) => {
+export const FiltersPanel: FC<FiltersPanelProps> = ({ groups, groupsLoading, groupsError, onResetFilters, onRefreshOrders }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [exportError, setExportError] = useState<string | null>(null);
 
@@ -249,7 +251,13 @@ export const FiltersPanel: FC<FiltersPanelProps> = ({ groups, groupsLoading, gro
                     className={styles.filterButton}
                     onClick={handleResetFilters}
                 >
-                    <ArrowRotateIcon/>
+                    <ArrowResetIcon/>
+                </Button>
+                <Button
+                    className={styles.filterButton}
+                    onClick={onRefreshOrders}
+                >
+                    <ArrowRefreshIcon/>
                 </Button>
                 <Button
                     className={styles.filterButton}

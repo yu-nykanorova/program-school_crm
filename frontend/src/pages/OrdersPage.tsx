@@ -4,7 +4,7 @@ import {Pagination} from "../components/pagination/Pagination.tsx";
 import styles from "./OrdersPage.module.scss";
 import {useSearchParams} from "react-router-dom";
 import {useAppSelector} from "../store/hooks/useAppSelector.tsx";
-import {useCallback, useEffect} from "react";
+import { useCallback, useEffect, useState } from "react";
 import {orderSliceActions} from "../store/slices/orderSlice.ts";
 import {Loader} from "../components/ui/Loader.tsx";
 import {useAppDispatch} from "../store/hooks/useAppDispatch.tsx";
@@ -16,6 +16,8 @@ import {useDebounce} from "../hooks/useDebounce.ts";
 
 export const OrdersPage = () => {
     const dispatch = useAppDispatch();
+
+    const [refreshOrders, setRefreshOrders] = useState(0);
 
     const [searchParams, setSearchParams] = useSearchParams({
         page: "1",
@@ -55,7 +57,7 @@ export const OrdersPage = () => {
                 pageSize: queryPageSize,
             }),
         );
-    }, [dispatch, debouncedParams]);
+    }, [dispatch, debouncedParams, refreshOrders]);
 
     useEffect(() => {
         dispatch(
@@ -83,6 +85,10 @@ export const OrdersPage = () => {
         });
     };
 
+    const handleRefreshOrders = () => {
+        setRefreshOrders((prev) => prev + 1);
+    };
+
     return (
         <div className={styles.ordersPage}>
             <FiltersPanel
@@ -90,6 +96,7 @@ export const OrdersPage = () => {
                 groupsLoading={groupsLoading}
                 groupsError={groupsError}
                 onResetFilters={handleResetFilters}
+                onRefreshOrders={handleRefreshOrders}
             />
 
             {loading && <Loader/>}

@@ -103,17 +103,18 @@ class AuthService {
     ): Promise<void> {
         const user = await userService.getUserOrThrow(payload.userId);
 
-        if (
-            user.role === UserRoleEnum.MANAGER &&
-            user.status === ManagerStatusEnum.BANNED
-        ) {
+        if (user.role !== UserRoleEnum.MANAGER) {
+            throw new ApiError(
+                "Only managers can create/change password",
+                StatusCodesEnum.FORBIDDEN,
+            );
+        }
+
+        if (user.status === ManagerStatusEnum.BANNED) {
             throw new ApiError("Account is banned", StatusCodesEnum.FORBIDDEN);
         }
 
-        if (
-            user.role === UserRoleEnum.MANAGER &&
-            user.status === ManagerStatusEnum.ACTIVE
-        ) {
+        if (user.status === ManagerStatusEnum.ACTIVE) {
             const currentPassword = user.password;
 
             if (!currentPassword) {
@@ -136,11 +137,8 @@ class AuthService {
 
         const updateUserData: Partial<IUser> = {
             password: newPassword,
+            status: ManagerStatusEnum.ACTIVE,
         };
-
-        if (user.role === UserRoleEnum.MANAGER) {
-            updateUserData.status = ManagerStatusEnum.ACTIVE;
-        }
 
         await userRepository.updateUser(payload.userId, updateUserData);
 

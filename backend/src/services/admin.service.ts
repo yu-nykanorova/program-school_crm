@@ -129,6 +129,15 @@ class AdminService {
     }
 
     public async activateRequest(managerId: string): Promise<string> {
+        const manager = await userService.getUserOrThrow(managerId);
+
+        if (manager.role !== UserRoleEnum.MANAGER) {
+            throw new ApiError(
+                "User is not a manager",
+                StatusCodesEnum.BAD_REQUEST,
+            );
+        }
+
         const actionToken = tokenService.generateActionToken({
             userId: managerId,
             role: UserRoleEnum.MANAGER,
