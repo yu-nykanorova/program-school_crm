@@ -8,6 +8,7 @@ import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import {
     IOrderBaseQuery,
     IOrderEditDTO,
+    IOrderManagerUpdateDTO,
     IOrderQuery,
     IOrderResult,
 } from "../interfaces/order.interface";
@@ -48,7 +49,7 @@ class OrderService {
 
         this.checkAccessToEdit(order, payload.userId);
 
-        const updatedDto: IOrderEditDTO = { ...dto };
+        const updatedDto: IOrderManagerUpdateDTO = { ...dto };
 
         const isFreeOrder =
             order.orderStatus === null ||
@@ -96,7 +97,7 @@ class OrderService {
             dto,
         );
 
-        const updateOrderData: IOrderEditDTO = {};
+        const updateOrderData: IOrderManagerUpdateDTO = {};
 
         if (!order.manager?._id) {
             updateOrderData.managerId = payload.userId;

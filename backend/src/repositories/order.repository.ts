@@ -8,7 +8,7 @@ import { ICommentCreateDTO } from "../interfaces/comment.interface";
 import { IManagerStatisticsDB } from "../interfaces/manager.interface";
 import {
     IOrderBaseQuery,
-    IOrderEditDTO,
+    IOrderManagerUpdateDTO,
     IOrderQuery,
     IOrderResult,
     IOrdersStatistics,
@@ -349,7 +349,7 @@ class OrderRepository {
 
     public async editOrderById(
         orderId: string,
-        dto: IOrderEditDTO,
+        dto: IOrderManagerUpdateDTO,
     ): Promise<IOrderResult | null> {
         await Order.findByIdAndUpdate(orderId, dto);
         return await this.getOrderById(orderId);

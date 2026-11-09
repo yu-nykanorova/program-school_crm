@@ -18,7 +18,6 @@ export class OrderValidator {
     private static sum = joi.number().min(0).max(1000000);
     private static alreadyPaid = joi.number().min(0).max(1000000);
     private static groupId = joi.string().hex().length(24).trim();
-    private static managerId = joi.string().hex().length(24).trim();
     private static orderStatus = joi
         .string()
         .valid(...Object.values(OrderStatusEnum));
@@ -48,7 +47,6 @@ export class OrderValidator {
         courseFormat: this.courseFormat.allow(null),
         courseType: this.courseType.allow(null),
         groupId: this.groupId.allow(null),
-        managerId: this.managerId.allow(null),
     });
 
     public static query = queryValidator(OrderQuerySortEnum, {

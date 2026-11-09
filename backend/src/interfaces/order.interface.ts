@@ -34,7 +34,6 @@ export type IOrderEditDTO = Partial<
     Pick<
         IOrder,
         | "groupId"
-        | "managerId"
         | "orderStatus"
         | "name"
         | "surname"
@@ -48,6 +47,10 @@ export type IOrderEditDTO = Partial<
         | "courseType"
     >
 >;
+
+export type IOrderManagerUpdateDTO = IOrderEditDTO & {
+    managerId?: string | null;
+};
 
 export interface IOrderResult {
     _id: string;
